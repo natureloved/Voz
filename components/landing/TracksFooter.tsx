@@ -70,7 +70,15 @@ export function TracksFooter() {
         </div>
 
         <p className="text-center text-xs text-ocean/60 font-mono">
-          Voz · Breakpoint 2026 Hackathon
+          Voz · 2026 Hackathon · Built by{' '}
+          <a
+            href="https://x.com/adejoke_btc"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-ocean transition-colors"
+          >
+            @adejoke_btc
+          </a>
         </p>
       </div>
     </footer>

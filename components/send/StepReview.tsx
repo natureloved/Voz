@@ -8,12 +8,13 @@ import { IntentReview } from './IntentReview';
 interface StepReviewProps {
   intent: PaymentIntent;
   onConfirm: (intent: PaymentIntent, resolvedContact?: Contact) => void;
+  onBack?: () => void;
 }
 
-export function StepReview({ intent, onConfirm }: StepReviewProps) {
+export function StepReview({ intent, onConfirm, onBack }: StepReviewProps) {
   return (
     <div className="py-8 sm:py-12">
-      <IntentReview intent={intent} onConfirm={onConfirm} />
+      <IntentReview intent={intent} onConfirm={onConfirm} onBack={onBack} />
     </div>
   );
 }

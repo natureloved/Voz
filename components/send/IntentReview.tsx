@@ -9,15 +9,16 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { ContactPicker } from '@/components/contacts/ContactPicker';
 import { ContactForm } from '@/components/contacts/ContactForm';
-import { Check, AlertCircle, UserRound, UserPlus } from 'lucide-react';
+import { Check, AlertCircle, UserRound, UserPlus, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface IntentReviewProps {
   intent: PaymentIntent;
   onConfirm: (intent: PaymentIntent, resolvedContact?: Contact) => void;
+  onBack?: () => void;
 }
 
-export function IntentReview({ intent, onConfirm }: IntentReviewProps) {
+export function IntentReview({ intent, onConfirm, onBack }: IntentReviewProps) {
   const { address } = useAccount();
   const [editedIntent, setEditedIntent] = React.useState(intent);
   const [resolvedContact, setResolvedContact] = React.useState<Contact | null>(null);

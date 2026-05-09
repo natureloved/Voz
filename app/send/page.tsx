@@ -24,10 +24,12 @@ export default function SendPage() {
   const [resolvedContact, setResolvedContact] = React.useState<Contact | null>(null);
   const [claimId] = React.useState(() => crypto.randomUUID());
   const [isParsing, setIsParsing] = React.useState(false);
+  const [parseError, setParseError] = React.useState<string | null>(null);
 
   const handleTranscribe = async (data: TranscribeResponse) => {
     setTranscript(data);
     setIsParsing(true);
+    setParseError(null);
 
     try {
       const res = await fetch('/api/parse-intent', {
@@ -39,10 +41,18 @@ export default function SendPage() {
       if (!res.ok) throw new Error('Intent parsing failed');
 
       const parsedIntent = await res.json();
+
+      // Detect hard-fail fallback (amount=0 + empty recipient)
+      if (parsedIntent.amount === 0 && !parsedIntent.recipient?.value) {
+        setParseError("Couldn't understand that. Try saying e.g. \"Send 20 dollars to Maria\".");
+        return;
+      }
+
       setIntent(parsedIntent);
       setStep('review');
     } catch (err) {
       console.error('Parse intent error:', err);
+      setParseError('Something went wrong. Please try again.');
     } finally {
       setIsParsing(false);
     }
@@ -52,6 +62,11 @@ export default function SendPage() {
     setIntent(confirmedIntent);
     setResolvedContact(contact ?? null);
     setStep('quote');
+  };
+
+  const handleBackToVoice = () => {
+    setIntent(null);
+    setStep('voice');
   };
 
   const handleQuoteConfirm = (confirmedRoute: Route) => {
@@ -128,11 +143,20 @@ export default function SendPage() {
                     Parsing your intent with AI...
                   </motion.div>
                 )}
+                {parseError && !isParsing && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-4 text-center text-sm text-coral font-medium bg-coral/5 border border-coral/20 rounded-lg px-4 py-3 max-w-md mx-auto"
+                  >
+                    {parseError}
+                  </motion.div>
+                )}
               </div>
             )}
 
             {step === 'review' && intent && (
-              <StepReview intent={intent} onConfirm={handleReviewConfirm} />
+              <StepReview intent={intent} onConfirm={handleReviewConfirm} onBack={handleBackToVoice} />
             )}
 
             {step === 'quote' && intent && (

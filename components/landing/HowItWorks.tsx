@@ -28,7 +28,7 @@ const STEPS = [
       </svg>
     ),
     title: 'We route to Solana',
-    body: 'LI.FI finds the best bridge route from any EVM chain. One signature — your USDC arrives on Solana.',
+    body: 'LI.FI finds the best bridge route from any EVM chain. With just one signature, your USDC arrives on Solana.',
   },
   {
     num: '03',
