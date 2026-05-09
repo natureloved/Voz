@@ -181,10 +181,10 @@ export function StepDone({
               emailStatus === 'sent'
             }
             className={cn(
-              'px-5 py-3 rounded-lg font-semibold text-cream transition-all',
+              'px-4 py-3 rounded-lg font-semibold text-cream transition-all',
               'bg-coral hover:bg-coral/90',
               'disabled:bg-ocean/20 disabled:text-ocean/40 disabled:cursor-not-allowed',
-              'flex items-center gap-2 min-w-[100px] justify-center'
+              'flex items-center gap-2 justify-center'
             )}
           >
             {emailStatus === 'sending' && (
