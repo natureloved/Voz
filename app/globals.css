@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #FBF7EF; /* cream */
+  --foreground: #0A2540; /* ocean */
+
+  --color-ocean: #0A2540;
+  --color-coral: #FF6B5C;
+  --color-gold: #F5C842;
+  --color-cream: #FBF7EF;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0A2540; /* ocean */
+    --foreground: #FBF7EF; /* cream */
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
