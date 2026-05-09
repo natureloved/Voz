@@ -44,11 +44,11 @@ export function TracksFooter() {
   return (
     <footer className="border-t border-ocean/10 py-8 md:py-12 px-4 sm:px-6 md:px-12 lg:px-20">
       <div className="max-w-6xl mx-auto space-y-8">
-        <p className="text-center text-xs font-bold text-ocean/60 uppercase tracking-widest">
+        <p className="text-center text-[10px] font-bold text-ocean/50 uppercase tracking-widest">
           Built with
         </p>
  
-        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 md:gap-16">
+        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 md:gap-12">
           {TRACKS.map((track, i) => {
             const Icon = track.icon;
             return (
@@ -58,10 +58,10 @@ export function TracksFooter() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="flex items-center gap-2 group"
+                className="flex items-center gap-1.5 group"
               >
-                <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-ocean/70 group-hover:text-ocean transition-colors" />
-                <span className="text-lg sm:text-xl font-display font-bold text-ocean/70 group-hover:text-ocean transition-colors">
+                <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-ocean/50 group-hover:text-ocean transition-colors" />
+                <span className="text-sm sm:text-base font-display font-semibold text-ocean/50 group-hover:text-ocean transition-colors">
                   {track.name}
                 </span>
               </motion.div>
