@@ -4,6 +4,8 @@ import * as React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { useAccount } from 'wagmi';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 const HEADLINE_WORDS = ['Speak.', 'Send.', 'Heard.'];
 
@@ -16,6 +18,16 @@ const fadeUp = (delay = 0) => ({
 });
 
 export function Hero() {
+  const { isConnected: isEvmConnected } = useAccount();
+  const { connected: isSolanaConnected } = useWallet();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isAnyConnected = mounted && (isEvmConnected || isSolanaConnected);
+
   return (
     <section className="min-h-[calc(100vh-60px)] flex items-center px-4 sm:px-6 md:px-12 lg:px-20">
       <div className="w-full max-w-6xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 items-center">
@@ -49,21 +61,57 @@ export function Hero() {
             Send more than just crypto. Deliver cross-chain remittances to Solana with your actual voice, perfectly translated into their native language.
           </motion.p>
 
+          {isAnyConnected && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-emerald-50 border border-emerald-200/50 rounded-xl p-4 flex items-center justify-between gap-4 max-w-md shadow-sm"
+            >
+              <div className="flex items-center gap-3">
+                <span className="flex h-2.5 w-2.5 relative shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                </span>
+                <p className="text-sm text-ocean/80 font-sans font-medium">
+                  Wallet connected successfully! You are ready to make voice payments.
+                </p>
+              </div>
+              <Link
+                href="/send"
+                className="text-xs font-bold text-coral hover:text-coral/80 uppercase tracking-wider shrink-0 transition-colors flex items-center gap-1"
+              >
+                Go to Send &rarr;
+              </Link>
+            </motion.div>
+          )}
+
           <motion.div {...fadeUp(0.72)} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-            <Link
-              href="/demo"
-              className="inline-flex items-center justify-center whitespace-nowrap bg-coral text-cream hover:bg-coral/90 h-12 px-7 text-base gap-2 shadow-lg shadow-coral/20 rounded-xl font-semibold transition-all active:scale-[0.97]"
-            >
-              Try the demo
-              <ArrowRight size={16} />
-            </Link>
-            <Link
-              href="/send"
-              className="inline-flex items-center justify-center text-ocean/60 hover:text-ocean text-sm gap-1.5 font-medium transition-colors"
-            >
-              Connect wallet
-              <ArrowRight size={14} />
-            </Link>
+            {isAnyConnected ? (
+              <Link
+                href="/send"
+                className="inline-flex items-center justify-center whitespace-nowrap bg-coral text-cream hover:bg-coral/90 h-12 px-7 text-base gap-2 shadow-lg shadow-coral/20 rounded-xl font-semibold transition-all active:scale-[0.97]"
+              >
+                Start Voice Payment
+                <ArrowRight size={16} />
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/demo"
+                  className="inline-flex items-center justify-center whitespace-nowrap bg-coral text-cream hover:bg-coral/90 h-12 px-7 text-base gap-2 shadow-lg shadow-coral/20 rounded-xl font-semibold transition-all active:scale-[0.97]"
+                >
+                  Try the demo
+                  <ArrowRight size={16} />
+                </Link>
+                <Link
+                  href="/send"
+                  className="inline-flex items-center justify-center text-ocean/60 hover:text-ocean text-sm gap-1.5 font-medium transition-colors"
+                >
+                  Connect wallet
+                  <ArrowRight size={14} />
+                </Link>
+              </>
+            )}
           </motion.div>
 
           <motion.div

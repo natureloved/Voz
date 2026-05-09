@@ -85,7 +85,7 @@ export default function DemoPage() {
           <span className="text-sm">Back</span>
         </Link>
         <div className="flex items-center gap-2">
-          <span className="font-display font-bold text-ocean text-xl tracking-tight">Voz</span>
+          <Link href="/" className="font-display font-bold text-ocean text-xl tracking-tight hover:opacity-90 transition-opacity">Voz</Link>
           <span className="text-[10px] font-bold bg-coral/15 text-coral px-2 py-0.5 rounded-full uppercase tracking-wider">
             Demo
           </span>
@@ -422,7 +422,7 @@ function DemoDoneStep({
         </Button>
 
         <p className="text-xs text-center text-ocean/40">
-          The magic moment — her claim page is ready with your translated voice message.
+          The magic moment. Her claim page is ready with your translated voice message.
         </p>
 
         <button

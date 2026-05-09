@@ -5,6 +5,7 @@ import { SolanaConnectButton } from './SolanaConnectButton';
 import { BalancePill } from './BalancePill';
 import { useEvmUsdcBalance } from '@/hooks/useEvmUsdcBalance';
 import { useSolanaUsdcBalance } from '@/hooks/useSolanaUsdcBalance';
+import Link from 'next/link';
 
 export function WalletBar() {
   const evmBalance = useEvmUsdcBalance();
@@ -23,9 +24,9 @@ export function WalletBar() {
       </div>
 
       {/* Center Brand */}
-      <div className="font-display font-bold text-ocean text-xl tracking-tight">
+      <Link href="/" className="font-display font-bold text-ocean text-xl tracking-tight hover:opacity-90 transition-opacity">
         Voz
-      </div>
+      </Link>
 
       {/* Solana Side */}
       <div className="flex items-center gap-4">

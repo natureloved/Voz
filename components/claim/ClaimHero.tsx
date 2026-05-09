@@ -4,6 +4,7 @@ import { SupportedCurrency } from '@/lib/fx';
 import { LocalCurrencyToggle } from './LocalCurrencyToggle';
 import { VoiceMessage } from './VoiceMessage';
 import { TxLink } from './TxLink';
+import Link from 'next/link';
 
 interface ClaimHeroProps {
   transfer: Transfer;
@@ -18,7 +19,9 @@ export function ClaimHero({ transfer, rates, audioUrl }: ClaimHeroProps) {
     <div className="min-h-screen bg-cream flex flex-col">
       {/* Header band */}
       <div className="bg-ocean px-4 sm:px-6 py-5 flex items-center justify-between">
-        <span className="font-display font-bold text-cream text-xl sm:text-2xl tracking-tight">Voz</span>
+        <Link href="/" className="font-display font-bold text-cream text-xl sm:text-2xl tracking-tight hover:opacity-90 transition-opacity">
+          Voz
+        </Link>
         <span className="text-cream/50 text-[10px] sm:text-xs font-mono">
           {new Date(transfer.createdAt).toLocaleDateString()}
         </span>

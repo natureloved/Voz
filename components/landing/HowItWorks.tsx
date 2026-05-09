@@ -2,87 +2,110 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-
-const STEPS = [
-  {
-    num: '01',
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-        <rect x="9" y="2" width="10" height="16" rx="5" fill="currentColor" />
-        <path d="M5 13c0 4.97 4.03 9 9 9s9-4.03 9-9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        <line x1="14" y1="22" x2="14" y2="26" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        <line x1="10" y1="26" x2="18" y2="26" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      </svg>
-    ),
-    title: 'Speak your intent',
-    body: 'Say "Send 25 dollars to Maria for her birthday" in English or Spanish. Claude parses the who, what, and why.',
-  },
-  {
-    num: '02',
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-        <circle cx="6" cy="14" r="4" stroke="currentColor" strokeWidth="2" />
-        <circle cx="22" cy="14" r="4" stroke="currentColor" strokeWidth="2" />
-        <path d="M10 14h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        <path d="M16 10l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
-    title: 'We route to Solana',
-    body: 'LI.FI finds the best bridge route from any EVM chain. With just one signature, your USDC arrives on Solana.',
-  },
-  {
-    num: '03',
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-        <path d="M4 10c0-3.314 2.686-6 6-6h8c3.314 0 6 2.686 6 6v2c0 3.314-2.686 6-6 6H10.5l-4 4v-4H10c-3.314 0-6-2.686-6-6v-2z" stroke="currentColor" strokeWidth="2" />
-        <circle cx="10" cy="13" r="1.5" fill="currentColor" />
-        <circle cx="14" cy="13" r="1.5" fill="currentColor" />
-        <circle cx="18" cy="13" r="1.5" fill="currentColor" />
-      </svg>
-    ),
-    title: 'They hear it in their language',
-    body: 'The recipient opens a link. Claude translates your message and ElevenLabs speaks it in natural Spanish.',
-  },
-];
+import Link from 'next/link';
 
 export function HowItWorks() {
   return (
-    <section className="py-12 md:py-20 px-4 sm:px-6 md:px-12 lg:px-20 bg-ocean/[0.03]">
-      <div className="max-w-6xl mx-auto space-y-12">
-        <div className="text-center space-y-3">
-          <p className="text-xs font-bold text-coral uppercase tracking-widest">How it works</p>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-ocean tracking-tight">
-            Three steps. Zero confusion.
+    <section className="py-24 px-6 bg-cream overflow-hidden">
+      <div className="max-w-5xl mx-auto">
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <p className="text-coral text-sm font-bold uppercase tracking-widest mb-3">
+            How Voz works
+          </p>
+          <h2 className="font-display text-4xl sm:text-5xl text-ocean font-bold">
+            One person speaks. The other hears.
           </h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Sender card */}
+          <motion.div
+            className="bg-white border border-ocean/10 rounded-2xl p-8 hover:border-ocean/20 transition-all flex flex-col justify-between"
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            whileHover={{ y: -4, boxShadow: '0 12px 30px -10px rgba(10, 37, 64, 0.08)' }}
+          >
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-full bg-coral text-cream
+                                flex items-center justify-center font-bold">
+                  1
+                </div>
+                <h3 className="font-display text-2xl text-ocean font-bold">You send</h3>
+              </div>
+              <ol className="space-y-4 text-ocean/80 list-decimal pl-5 marker:text-coral marker:font-bold">
+                <li><strong className="text-ocean">Connect</strong> your wallet — Base, Arbitrum, Optimism, or Polygon</li>
+                <li><strong className="text-ocean">Speak</strong> what you want to send: <em className="text-ocean/70">"Send fifty dollars to Maria for her birthday"</em></li>
+                <li><strong className="text-ocean">Confirm</strong> the amount and recipient</li>
+                <li><strong className="text-ocean">Approve</strong> the transaction — Voz bridges to Solana automatically</li>
+                <li><strong className="text-ocean">Share</strong> the claim link with your recipient</li>
+              </ol>
+            </div>
+          </motion.div>
+
+          {/* Recipient card */}
+          <motion.div
+            className="bg-white border border-gold/30 rounded-2xl p-8 hover:border-gold/50 transition-all flex flex-col justify-between"
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            whileHover={{ y: -4, boxShadow: '0 12px 30px -10px rgba(245, 200, 66, 0.12)' }}
+          >
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-full bg-gold text-ocean
+                                flex items-center justify-center font-bold">
+                  2
+                </div>
+                <h3 className="font-display text-2xl text-ocean font-bold">They receive</h3>
+              </div>
+              <ol className="space-y-4 text-ocean/80 list-decimal pl-5 marker:text-gold marker:font-bold">
+                <li><strong className="text-ocean">Open</strong> the claim link on any phone</li>
+                <li><strong className="text-ocean">Hear</strong> your message in their language</li>
+                <li><strong className="text-ocean">Receive</strong> USDC straight into their Solana wallet</li>
+              </ol>
+            </div>
+            <p className="mt-8 text-coral italic text-sm font-medium">
+              No app to download. No wallet to connect. No new accounts.
+            </p>
+          </motion.div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-4 md:gap-6">
-          {STEPS.map((step, i) => (
-            <motion.div
-              key={step.num}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.5, delay: i * 0.15 }}
+        {/* CTA win */}
+        <motion.div
+          className="mt-20 text-center space-y-6"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+        >
+          <p className="text-xl font-display text-ocean font-medium">
+            Ready to try it?
+          </p>
+          <motion.div
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.98 }}
+            className="inline-block"
+          >
+            <Link
+              href="/demo"
+              className="inline-flex items-center justify-center bg-coral text-cream px-8 py-3.5 rounded-xl font-semibold shadow-md shadow-coral/10 hover:bg-coral/95 transition-colors text-base"
             >
-              <div className="h-full rounded-2xl border border-ocean/10 bg-cream p-5 sm:p-7 space-y-5 hover:border-ocean/20 hover:shadow-md transition-all">
-                <div className="flex items-start justify-between">
-                  <div className="w-12 h-12 rounded-xl bg-ocean/5 flex items-center justify-center text-ocean">
-                    {step.icon}
-                  </div>
-                  <span className="text-3xl sm:text-4xl font-display font-bold text-coral/20 leading-none">
-                    {step.num}
-                  </span>
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-xl font-display font-bold text-ocean">{step.title}</h3>
-                  <p className="text-sm text-ocean/60 leading-relaxed">{step.body}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+              Try the demo &rarr;
+            </Link>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
 }
+

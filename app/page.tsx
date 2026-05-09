@@ -13,9 +13,9 @@ export default function Home() {
     <main className="min-h-screen bg-cream flex flex-col">
       {/* Minimal nav */}
       <nav className="sticky top-0 z-50 w-full bg-cream/80 backdrop-blur border-b border-ocean/10 py-3 px-4 sm:px-6 flex items-center justify-between">
-        <span className="font-display font-bold text-ocean text-xl tracking-tight">
+        <Link href="/" className="font-display font-bold text-ocean text-xl tracking-tight hover:opacity-90 transition-opacity">
           Voz<span className="text-coral">.</span>
-        </span>
+        </Link>
         <div className="flex items-center gap-4">
           <Link href="/contacts" className="text-sm text-ocean/50 hover:text-ocean transition-colors">
             Contacts
