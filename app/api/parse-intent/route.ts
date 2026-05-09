@@ -87,7 +87,7 @@ export async function POST(req: Request) {
       }
 
       const message = await anthropic.messages.create({
-        model: 'claude-3-5-sonnet-20240620',
+        model: 'claude-sonnet-4-20250514',
         max_tokens: 1024,
         system: SYSTEM_PROMPT,
         messages: [
@@ -97,6 +97,7 @@ export async function POST(req: Request) {
       });
 
       const responseText = message.content[0].type === 'text' ? message.content[0].text : '';
+      console.log('[parse-intent] Claude raw response:', responseText);
       return JSON.parse(extractJson(responseText));
     };
 
@@ -106,24 +107,25 @@ export async function POST(req: Request) {
       const parsed = PaymentIntentSchema.parse(rawJson);
       return NextResponse.json(parsed);
     } catch (err: any) {
-      console.warn("First parse attempt failed, retrying...", err);
+      console.warn('[parse-intent] First attempt failed:', err.message);
       try {
         rawJson = await parseIntent(err.message || String(err));
         const parsed = PaymentIntentSchema.parse(rawJson);
         return NextResponse.json(parsed);
       } catch (retryErr: any) {
-        console.error("Second parse attempt failed", retryErr);
+        console.error('[parse-intent] Second attempt failed:', retryErr.message);
+        console.error('[parse-intent] Last raw JSON:', rawJson);
         return NextResponse.json({
           amount: 0,
           recipient: { kind: 'name', value: '' },
           language: language || 'en',
           confidence: 'low',
-          ambiguities: ['Failed to parse intent completely. Please confirm details.']
+          ambiguities: ['Failed to parse intent completely. Please confirm details.'],
         });
       }
     }
   } catch (err: any) {
-    console.error("Parse Intent API Error:", err);
+    console.error('[parse-intent] API error:', err);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
