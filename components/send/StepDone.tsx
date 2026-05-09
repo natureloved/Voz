@@ -2,67 +2,54 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import { useAccount } from 'wagmi';
-import { Route } from '@lifi/sdk';
-import { PaymentIntent } from '@/lib/intent-schema';
-import type { Contact } from '@/lib/contacts';
-import { Card, CardContent } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { Copy, Check, Mail } from 'lucide-react';
+import { Check, Copy, Mail, Loader2, ExternalLink } from 'lucide-react';
+import { cn } from '@/lib/cn';
 
 interface StepDoneProps {
-  intent: PaymentIntent;
   claimId: string;
-  executedRoute: Route | null;
-  resolvedContact: Contact | null;
+  claimUrl: string;
+  recipientName?: string;
+  recipientEmail?: string;
+  amount: number;
+  txHash?: string;
+  recipientLanguage: 'en' | 'es';
 }
 
-function extractTxHash(route: Route | null): string {
-  if (!route) return '';
-  for (const step of route.steps) {
-    const ext = step as any;
-    const processes: any[] = ext.execution?.process ?? [];
-    const cross = processes.find((p: any) => p.type === 'CROSS_CHAIN' || p.type === 'SEND' || p.type === 'RECEIVING_CHAIN');
-    if (cross?.txHash) return cross.txHash;
-  }
-  return '';
-}
-
-export function StepDone({ intent, claimId, executedRoute, resolvedContact }: StepDoneProps) {
-  const { address: evmAddress } = useAccount();
+export function StepDone({
+  claimId,
+  claimUrl,
+  recipientName,
+  recipientEmail: prefilledEmail,
+  amount,
+  txHash,
+  recipientLanguage,
+}: StepDoneProps) {
+  const [email, setEmail] = React.useState(prefilledEmail ?? '');
+  const [emailStatus, setEmailStatus] = React.useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [copied, setCopied] = React.useState(false);
   const [audioPlayed, setAudioPlayed] = React.useState(false);
-  const audioRef = React.useRef<HTMLAudioElement | null>(null);
   const didCreate = React.useRef(false);
 
-  const appUrl = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_APP_URL ?? '');
-  const claimUrl = `${appUrl}/claim/${claimId}`;
-
-  // Create transfer record + fire email on mount (once)
+  // Create transfer record on mount (once)
   React.useEffect(() => {
     if (didCreate.current) return;
     didCreate.current = true;
 
-    const txHash = extractTxHash(executedRoute);
-    const toSolanaAddress = intent.recipient?.value ?? '';
-    const fromChain = (executedRoute?.steps?.[0] as any)?.action?.fromChainId ?? 0;
-
     const transferPayload = {
       id: claimId,
-      amount: intent.amount,
-      fromChain,
-      toSolanaAddress,
-      recipientName: resolvedContact?.name,
-      recipientLanguage: resolvedContact?.language ?? intent.language,
-      recipientEmail: resolvedContact?.email,
-      senderMessageOriginal: intent.message ?? '',
-      senderLanguage: intent.language,
-      occasion: intent.occasion,
+      amount,
+      fromChain: 0,
+      toSolanaAddress: '',
+      recipientName,
+      recipientLanguage,
+      recipientEmail: prefilledEmail,
+      senderMessageOriginal: '',
+      senderLanguage: 'en',
+      occasion: 'General',
       txHash: txHash || 'pending',
       status: txHash ? 'confirmed' : 'pending',
     };
 
-    // Fire transfer creation + email non-blockingly
     (async () => {
       try {
         await fetch('/api/transfers', {
@@ -70,51 +57,32 @@ export function StepDone({ intent, claimId, executedRoute, resolvedContact }: St
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(transferPayload),
         });
-
-        if (resolvedContact?.email || /* sender email not tracked yet */ false) {
-          fetch('/api/emails/send-claim', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              transferId: claimId,
-              amount: intent.amount,
-              senderName: evmAddress ? `${evmAddress.slice(0, 6)}…${evmAddress.slice(-4)}` : undefined,
-              senderLanguage: intent.language,
-              recipientName: resolvedContact?.name,
-              recipientEmail: resolvedContact?.email,
-              recipientLanguage: resolvedContact?.language ?? intent.language,
-              txHash,
-              claimUrl,
-            }),
-          }).catch(() => {/* non-blocking */});
-        }
-      } catch {
-        // Non-blocking — don't block the success UI
+      } catch (err) {
+        console.error('Error creating transfer record:', err);
       }
     })();
-  }, [claimId, evmAddress, intent, executedRoute, resolvedContact, claimUrl]);
+  }, [claimId, amount, txHash, recipientName, recipientLanguage, prefilledEmail]);
 
   // Auto-play TTS confirmation
   React.useEffect(() => {
     if (audioPlayed) return;
 
-    const recipientName = resolvedContact?.name ?? intent.recipient?.value ?? 'the recipient';
-    const confirmationText = intent.language === 'es'
-      ? `${intent.amount} dólares enviados a ${recipientName}. Recibirá un mensaje de voz.`
-      : `${intent.amount} dollars sent to ${recipientName}. They'll get a voice message.`;
+    const finalName = recipientName ?? 'the recipient';
+    const confirmationText = recipientLanguage === 'es'
+      ? `${amount} dólares enviados a ${finalName}. Recibirá un mensaje de voz.`
+      : `${amount} dollars sent to ${finalName}. They'll get a voice message.`;
 
     async function playConfirmation() {
       try {
         const res = await fetch('/api/tts', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: confirmationText, language: intent.language }),
+          body: JSON.stringify({ text: confirmationText, language: recipientLanguage }),
         });
         if (!res.ok) return;
         const audioBlob = await res.blob();
         const audioUrl = URL.createObjectURL(audioBlob);
         const audio = new Audio(audioUrl);
-        audioRef.current = audio;
         await audio.play();
         setAudioPlayed(true);
       } catch {
@@ -124,7 +92,7 @@ export function StepDone({ intent, claimId, executedRoute, resolvedContact }: St
 
     const timer = setTimeout(playConfirmation, 1200);
     return () => clearTimeout(timer);
-  }, [intent, resolvedContact, audioPlayed]);
+  }, [amount, recipientName, recipientLanguage, audioPlayed]);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(claimUrl);
@@ -132,82 +100,150 @@ export function StepDone({ intent, claimId, executedRoute, resolvedContact }: St
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleEmail = async () => {
+    if (!email || !email.includes('@')) return;
+    setEmailStatus('sending');
+    try {
+      const res = await fetch('/api/emails/send-claim', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          transferId: claimId,
+          recipientEmail: email,
+          recipientLanguage,
+        }),
+      });
+      if (!res.ok) throw new Error('Failed to send');
+      setEmailStatus('sent');
+    } catch {
+      setEmailStatus('error');
+      setTimeout(() => setEmailStatus('idle'), 3000);
+    }
+  };
+
   return (
-    <div className="py-8 sm:py-12 space-y-6 sm:space-y-8 max-w-md mx-auto flex flex-col items-center">
+    <div className="max-w-xl mx-auto py-12 px-6">
       {/* Animated checkmark */}
-      <motion.div className="relative w-24 h-24 sm:w-32 sm:h-32 flex items-center justify-center">
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: 'spring', stiffness: 200, damping: 12 }}
-          className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gold/20 flex items-center justify-center"
-        >
-          <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-            <motion.path
-              d="M16 32L28 44L48 20"
-              stroke="#F5C842"
-              strokeWidth="5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
-            />
-          </svg>
-        </motion.div>
+      <motion.div
+        initial={{ scale: 0, rotate: -90 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+        className="w-20 h-20 mx-auto rounded-full bg-gold flex items-center justify-center mb-8"
+      >
+        <Check className="w-10 h-10 text-ocean" strokeWidth={3} />
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
-        className="text-center space-y-2"
-      >
-        <h2 className="text-2xl sm:text-3xl font-display font-bold text-ocean">Sent!</h2>
-        <p className="text-ocean/60 font-sans">
-          <span className="font-mono font-semibold">${intent.amount}</span> USDC to{' '}
-          <span className="font-semibold">{resolvedContact?.name ?? intent.recipient?.value}</span>
+      {/* Headline */}
+      <div className="text-center mb-10">
+        <h2 className="font-display text-4xl text-ocean mb-2">
+          ${amount} sent{recipientName ? ` to ${recipientName}` : ''}
+        </h2>
+        <p className="text-ocean/60">
+          Now share the claim link so they can hear your message
         </p>
-      </motion.div>
+        {txHash && txHash !== 'pending' && (
+          <a
+            href={`https://solscan.io/tx/${txHash}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 mt-3 text-sm text-coral hover:underline font-mono"
+          >
+            View on Solscan <ExternalLink className="w-3 h-3" />
+          </a>
+        )}
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.0 }}
-        className="w-full"
-      >
-        <Card className="border-ocean/10">
-          <CardContent className="p-6 space-y-4">
-            <div>
-              <label className="text-xs font-semibold text-ocean/50 uppercase tracking-wider mb-2 block">
-                Claim Link
-              </label>
-              <div className="flex items-center gap-2">
-                <div className="flex-1 bg-ocean/5 rounded-lg px-3 py-2.5 font-mono text-xs text-ocean truncate">
-                  {claimUrl}
-                </div>
-                <button
-                  onClick={handleCopy}
-                  className="shrink-0 p-2.5 rounded-lg bg-ocean/5 hover:bg-ocean/10 text-ocean transition-colors"
-                >
-                  {copied ? <Check size={16} /> : <Copy size={16} />}
-                </button>
-              </div>
-            </div>
-
-            {resolvedContact?.email ? (
-              <p className="text-xs text-ocean/50 text-center">
-                Email sent to <span className="font-semibold">{resolvedContact.email}</span>
-              </p>
-            ) : (
-              <Button className="w-full h-12 bg-ocean hover:bg-ocean/90 text-cream gap-2" onClick={handleCopy}>
-                <Mail size={18} />
-                Copy &amp; Share Link
-              </Button>
+      {/* Email card — primary action */}
+      <div className="bg-white border border-coral/30 rounded-2xl p-6 mb-4">
+        <div className="flex items-center gap-2 mb-3">
+          <Mail className="w-4 h-4 text-coral" />
+          <p className="text-sm font-semibold text-ocean uppercase tracking-wide">
+            Send by email
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="recipient@example.com"
+            disabled={emailStatus === 'sending' || emailStatus === 'sent'}
+            className="flex-1 px-4 py-3 rounded-lg border border-ocean/20 bg-cream
+                       text-ocean placeholder:text-ocean/40
+                       focus:outline-none focus:border-coral focus:ring-2 focus:ring-coral/20
+                       disabled:opacity-60"
+          />
+          <button
+            onClick={handleEmail}
+            disabled={
+              !email.includes('@') ||
+              emailStatus === 'sending' ||
+              emailStatus === 'sent'
+            }
+            className={cn(
+              'px-5 py-3 rounded-lg font-semibold text-cream transition-all',
+              'bg-coral hover:bg-coral/90',
+              'disabled:bg-ocean/20 disabled:text-ocean/40 disabled:cursor-not-allowed',
+              'flex items-center gap-2 min-w-[100px] justify-center'
             )}
-          </CardContent>
-        </Card>
-      </motion.div>
+          >
+            {emailStatus === 'sending' && (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            )}
+            {emailStatus === 'sent' && <Check className="w-4 h-4" />}
+            {emailStatus === 'idle' && 'Send'}
+            {emailStatus === 'error' && 'Retry'}
+          </button>
+        </div>
+        {emailStatus === 'sent' && (
+          <motion.p
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-3 text-sm text-ocean/70"
+          >
+            ✓ Email sent. They'll get the claim link in their inbox.
+          </motion.p>
+        )}
+        {emailStatus === 'error' && (
+          <p className="mt-3 text-sm text-coral">
+            Couldn't send. Try again or copy the link below.
+          </p>
+        )}
+      </div>
+
+      {/* Copy link card — secondary action */}
+      <div className="bg-cream border border-ocean/10 rounded-2xl p-6">
+        <p className="text-sm font-semibold text-ocean/70 uppercase tracking-wide mb-3">
+          Or share anywhere
+        </p>
+        <div className="flex gap-2">
+          <div className="flex-1 px-4 py-3 rounded-lg bg-white border border-ocean/10 font-mono text-sm text-ocean/70 truncate">
+            {claimUrl}
+          </div>
+          <button
+            onClick={handleCopy}
+            className={cn(
+              'px-5 py-3 rounded-lg font-semibold transition-all',
+              'border border-ocean/20 hover:border-ocean/40 hover:bg-white',
+              'flex items-center gap-2 min-w-[100px] justify-center',
+              copied ? 'text-gold border-gold' : 'text-ocean'
+            )}
+          >
+            {copied ? (
+              <>
+                <Check className="w-4 h-4" /> Copied
+              </>
+            ) : (
+              <>
+                <Copy className="w-4 h-4" /> Copy
+              </>
+            )}
+          </button>
+        </div>
+        <p className="mt-3 text-xs text-ocean/50">
+          Paste into WhatsApp, Telegram, iMessage, or anywhere else
+        </p>
+      </div>
     </div>
   );
 }

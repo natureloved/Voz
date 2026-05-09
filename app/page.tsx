@@ -81,7 +81,7 @@ export default function Home() {
                 <Link
                   href="/demo"
                   onClick={() => setIsOpen(false)}
-                  className="text-center text-sm font-semibold bg-coral text-cream px-4 py-3 rounded-xl hover:bg-coral/90 active:scale-[0.97] transition-all shadow-md shadow-coral/10"
+                  className="self-start text-sm font-semibold bg-coral text-cream px-4 py-2 rounded-lg hover:bg-coral/90 active:scale-[0.97] transition-all shadow-md shadow-coral/10"
                 >
                   Try demo
                 </Link>

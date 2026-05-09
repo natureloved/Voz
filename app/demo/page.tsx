@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   DEMO_TRANSCRIPT, DEMO_INTENT, DEMO_ROUTE,
@@ -12,6 +11,7 @@ import { Button } from '@/components/ui/Button';
 import { Check, Loader2, Mic, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/Card';
+import { StepDone } from '@/components/send/StepDone';
 
 type DemoStep = 'voice' | 'review' | 'quote' | 'execute' | 'done';
 
@@ -22,7 +22,6 @@ interface TimelineEntry {
 }
 
 export default function DemoPage() {
-  const router = useRouter();
   const [step, setStep] = React.useState<DemoStep>('voice');
   const [typedText, setTypedText] = React.useState('');
   const [claimId] = React.useState(() => crypto.randomUUID());
@@ -153,10 +152,27 @@ export default function DemoPage() {
             )}
 
             {step === 'done' && (
-              <DemoDoneStep
-                claimId={claimId}
-                onViewClaim={() => router.push(`/claim/${claimId}`)}
-              />
+              <>
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-coral/10 border border-coral/20 rounded-lg px-4 py-3 mb-6 text-center max-w-xl mx-auto"
+                >
+                  <p className="text-sm text-coral">
+                    ✨ <strong>Demo mode</strong> — try the email flow with your own address
+                  </p>
+                </motion.div>
+
+                <StepDone
+                  claimId={claimId}
+                  claimUrl={typeof window !== 'undefined' ? `${window.location.origin}/claim/${claimId}` : ''}
+                  recipientName="Maria"
+                  recipientEmail="" // empty so judges type their own
+                  amount={25}
+                  txHash="DEMO_TX_HASH_NOT_REAL"
+                  recipientLanguage="es"
+                />
+              </>
             )}
           </motion.div>
         </AnimatePresence>
@@ -362,80 +378,4 @@ function DemoExecuteStep({ timeline }: { timeline: TimelineEntry[] }) {
   );
 }
 
-// ── Done step ────────────────────────────────────────────────
-function DemoDoneStep({
-  claimId,
-  onViewClaim,
-}: {
-  claimId: string;
-  onViewClaim: () => void;
-}) {
-  const claimUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/claim/${claimId}`
-    : `/claim/${claimId}`;
 
-  const [copied, setCopied] = React.useState(false);
-
-  return (
-    <div className="py-8 sm:py-12 flex flex-col items-center space-y-6 sm:space-y-8">
-      <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ type: 'spring', stiffness: 200, damping: 12 }}
-        className="w-28 h-28 rounded-full bg-gold/20 flex items-center justify-center"
-      >
-        <svg width="56" height="56" viewBox="0 0 64 64" fill="none">
-          <motion.path
-            d="M16 32L28 44L48 20"
-            stroke="#F5C842"
-            strokeWidth="5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          />
-        </svg>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-        className="text-center space-y-2"
-      >
-        <h2 className="text-2xl sm:text-3xl font-display font-bold text-ocean">Sent!</h2>
-        <p className="text-ocean/60">$25.00 USDC → Maria García on Solana</p>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
-        className="w-full space-y-3"
-      >
-        <Button
-          className="w-full h-13 text-base bg-ocean text-cream hover:bg-ocean/90 rounded-xl shadow-lg shadow-ocean/10"
-          onClick={onViewClaim}
-        >
-          ✨ Open Maria's claim page
-        </Button>
-
-        <p className="text-xs text-center text-ocean/40">
-          The magic moment. Her claim page is ready with your translated voice message.
-        </p>
-
-        <button
-          onClick={async () => {
-            await navigator.clipboard.writeText(claimUrl);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-          }}
-          className="w-full text-xs text-ocean/40 hover:text-ocean transition-colors py-2"
-        >
-          {copied ? 'Copied!' : 'Copy claim link'}
-        </button>
-      </motion.div>
-    </div>
-  );
-}

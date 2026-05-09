@@ -169,10 +169,13 @@ export default function SendPage() {
 
             {step === 'done' && intent && (
               <StepDone
-                intent={intent}
                 claimId={claimId}
-                executedRoute={executedRoute}
-                resolvedContact={resolvedContact}
+                claimUrl={typeof window !== 'undefined' ? `${window.location.origin}/claim/${claimId}` : ''}
+                recipientName={resolvedContact?.name ?? intent.recipient?.value}
+                recipientEmail={resolvedContact?.email}
+                amount={intent.amount}
+                txHash={extractTxHash(executedRoute)}
+                recipientLanguage={(resolvedContact?.language ?? intent.language) === 'es' ? 'es' : 'en'}
               />
             )}
           </motion.div>
@@ -180,6 +183,17 @@ export default function SendPage() {
       </div>
     </main>
   );
+}
+
+function extractTxHash(route: Route | null): string {
+  if (!route) return '';
+  for (const step of route.steps) {
+    const ext = step as any;
+    const processes: any[] = ext.execution?.process ?? [];
+    const cross = processes.find((p: any) => p.type === 'CROSS_CHAIN' || p.type === 'SEND' || p.type === 'RECEIVING_CHAIN');
+    if (cross?.txHash) return cross.txHash;
+  }
+  return '';
 }
 
 export const dynamic = 'force-dynamic';

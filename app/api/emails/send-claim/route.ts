@@ -4,25 +4,46 @@ import { resend, FROM_ADDRESS } from '@/lib/resend';
 import RecipientNotification from '@/emails/RecipientNotification';
 import SenderConfirmation from '@/emails/SenderConfirmation';
 import React from 'react';
+import { getTransfer } from '@/lib/transfers';
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
     const {
       transferId,
-      amount,
-      senderName,
       senderEmail,
       senderLanguage,
-      recipientName,
       recipientEmail,
+    } = body;
+
+    let {
+      amount,
+      senderName,
+      recipientName,
       recipientLanguage,
       txHash,
       claimUrl,
     } = body;
 
-    if (!transferId || !amount || !claimUrl) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    if (!transferId) {
+      return NextResponse.json({ error: 'Missing transferId' }, { status: 400 });
+    }
+
+    // Try to load from database if fields are missing
+    if (!amount || !claimUrl) {
+      const transfer = await getTransfer(transferId);
+      if (transfer) {
+        amount = amount ?? transfer.amount;
+        recipientName = recipientName ?? transfer.recipientName;
+        recipientLanguage = recipientLanguage ?? transfer.recipientLanguage;
+        txHash = txHash ?? transfer.txHash;
+        claimUrl = claimUrl ?? `${process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : '')}/claim/${transferId}`;
+        senderName = senderName ?? transfer.senderName;
+      }
+    }
+
+    if (!amount || !claimUrl) {
+      return NextResponse.json({ error: 'Missing required transfer fields' }, { status: 400 });
     }
 
     const sends: Promise<unknown>[] = [];

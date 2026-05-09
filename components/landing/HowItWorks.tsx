@@ -42,11 +42,11 @@ export function HowItWorks() {
                 <h3 className="font-display text-2xl text-ocean font-bold">You send</h3>
               </div>
               <ol className="space-y-4 text-ocean/80 list-decimal pl-5 marker:text-coral marker:font-bold">
-                <li><strong className="text-ocean">Connect</strong> your wallet — Base, Arbitrum, Optimism, or Polygon</li>
+                <li><strong className="text-ocean">Connect</strong> your wallet - Base, Arbitrum, Optimism, or Polygon</li>
                 <li><strong className="text-ocean">Speak</strong> what you want to send: <em className="text-ocean/70">"Send fifty dollars to Maria for her birthday"</em></li>
                 <li><strong className="text-ocean">Confirm</strong> the amount and recipient</li>
-                <li><strong className="text-ocean">Approve</strong> the transaction — Voz bridges to Solana automatically</li>
-                <li><strong className="text-ocean">Share</strong> the claim link with your recipient</li>
+                <li><strong className="text-ocean">Approve</strong> the transaction - Voz bridges to Solana automatically</li>
+                <li><strong className="text-ocean">Share</strong> the claim link by email or copy it to send via WhatsApp, Telegram, or text</li>
               </ol>
             </div>
           </motion.div>
@@ -75,7 +75,7 @@ export function HowItWorks() {
               </ol>
             </div>
             <p className="mt-8 text-coral italic text-sm font-medium">
-              No app to download. No wallet to connect. No new accounts.
+              No app to download. No wallet to connect.
             </p>
           </motion.div>
         </div>
