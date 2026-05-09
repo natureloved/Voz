@@ -19,10 +19,16 @@ Schema:
   "ambiguities": string[] // List missing/ambiguous details
 }
 
+IMPORTANT: Always convert written-out numbers to digits (e.g. "two" → 2, "twenty" → 20, "fifty" → 50, "a hundred" → 100, "dos" → 2, "veinte" → 20).
+
 Examples:
 Input: "Send 20 dollars to Maria"
 Language: "en"
 Output: {"amount":20,"recipient":{"kind":"name","value":"Maria"},"language":"en","confidence":"high","ambiguities":[]}
+
+Input: "Send two dollars to James"
+Language: "en"
+Output: {"amount":2,"recipient":{"kind":"name","value":"James"},"language":"en","confidence":"high","ambiguities":[]}
 
 Input: "Envía cincuenta a la dirección 7xKXEaabc para la renta"
 Language: "es"

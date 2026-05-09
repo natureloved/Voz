@@ -12,6 +12,9 @@ import { StepQuote } from '@/components/send/StepQuote';
 import { StepExecute } from '@/components/send/StepExecute';
 import { StepDone } from '@/components/send/StepDone';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAccount } from 'wagmi';
+import Link from 'next/link';
+import { Sparkles, X, ArrowRight } from 'lucide-react';
 
 type SendStep = 'voice' | 'review' | 'quote' | 'execute' | 'done';
 
@@ -25,6 +28,22 @@ export default function SendPage() {
   const [claimId] = React.useState(() => crypto.randomUUID());
   const [isParsing, setIsParsing] = React.useState(false);
   const [parseError, setParseError] = React.useState<string | null>(null);
+
+  const { address } = useAccount();
+  const [hasNoContacts, setHasNoContacts] = React.useState(false);
+  const [hideTip, setHideTip] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!address) return;
+    fetch(`/api/contacts?evmAddress=${address}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length === 0) {
+          setHasNoContacts(true);
+        }
+      })
+      .catch(() => {});
+  }, [address]);
 
   const handleTranscribe = async (data: TranscribeResponse) => {
     setTranscript(data);
@@ -133,6 +152,41 @@ export default function SendPage() {
           >
             {step === 'voice' && (
               <div className="relative">
+                <AnimatePresence>
+                  {hasNoContacts && !hideTip && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10, height: 0 }}
+                      animate={{ opacity: 1, y: 0, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+                      className="max-w-md mx-auto mb-6 bg-gold/10 border border-gold/30 rounded-xl p-4 relative overflow-hidden"
+                    >
+                      <button
+                        onClick={() => setHideTip(true)}
+                        className="absolute top-3 right-3 text-ocean/40 hover:text-ocean transition-colors"
+                        aria-label="Dismiss"
+                      >
+                        <X size={16} />
+                      </button>
+                      <div className="flex items-start gap-3 pr-4">
+                        <div className="p-2 rounded-lg bg-gold/20 text-gold mt-0.5 shrink-0">
+                          <Sparkles size={18} />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-display font-bold text-ocean text-sm mb-1">New to Voz?</h3>
+                          <p className="text-sm text-ocean/70 leading-relaxed mb-2">
+                            You can send directly by speaking, but voice transfers are <strong>even easier</strong> if you add contacts first!
+                          </p>
+                          <Link
+                            href="/contacts"
+                            className="inline-flex items-center gap-1.5 text-sm font-bold text-coral hover:opacity-80 transition-all"
+                          >
+                            Add a contact <ArrowRight size={14} />
+                          </Link>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
                 <StepVoice transcript={transcript} onTranscribe={handleTranscribe} />
                 {isParsing && (
                   <motion.div

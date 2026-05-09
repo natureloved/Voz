@@ -24,7 +24,7 @@ export function WalletBar() {
       </div>
 
       {/* Center Brand */}
-      <Link href="/" className="hidden sm:block font-display font-bold text-ocean text-xl tracking-tight hover:opacity-90 transition-opacity">
+      <Link href="/" className="font-display font-bold text-ocean text-lg sm:text-xl tracking-tight hover:opacity-90 transition-opacity">
         Voz
       </Link>
 
