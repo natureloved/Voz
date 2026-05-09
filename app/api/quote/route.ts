@@ -1,7 +1,12 @@
 import { NextResponse } from 'next/server';
-import { getRoutes } from '@/lib/lifi';
+import { createConfig, getRoutes } from '@lifi/sdk';
 import { TOKENS } from '@/lib/tokens';
 import { SOLANA_CHAIN_ID } from '@/lib/chains';
+
+// Minimal server-side config — no wallet providers needed for route queries
+createConfig({
+  integrator: process.env.NEXT_PUBLIC_LIFI_INTEGRATOR || 'voz-dev3pack',
+});
 
 export async function POST(req: Request) {
   try {
