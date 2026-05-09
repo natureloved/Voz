@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Button } from '@/components/ui/Button';
 import { ArrowRight } from 'lucide-react';
 
 const HEADLINE_WORDS = ['Speak.', 'Send.', 'Heard.'];

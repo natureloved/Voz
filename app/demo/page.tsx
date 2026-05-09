@@ -4,12 +4,12 @@ import * as React from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  DEMO_TRANSCRIPT, DEMO_INTENT, DEMO_CONTACT, DEMO_ROUTE,
+  DEMO_TRANSCRIPT, DEMO_INTENT, DEMO_ROUTE,
   DEMO_TIMELINE, DEMO_TRANSFER_BASE,
 } from '@/lib/demo-mode';
 import { RouteCard } from '@/components/send/RouteCard';
 import { Button } from '@/components/ui/Button';
-import { Check, Loader2, AlertCircle, Mic, ArrowLeft } from 'lucide-react';
+import { Check, Loader2, Mic, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/Card';
 

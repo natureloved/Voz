@@ -3,7 +3,6 @@
 import * as React from 'react';
 import type { Contact } from '@/lib/contacts';
 import { Card, CardContent } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
 import { Pencil, Trash2, Globe, Mail } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
