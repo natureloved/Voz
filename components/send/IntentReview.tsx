@@ -92,7 +92,18 @@ export function IntentReview({ intent, onConfirm, onBack }: IntentReviewProps) {
       <Card className="w-full max-w-md mx-auto animate-in fade-in zoom-in-95">
         <CardHeader className="pb-4 border-b border-ocean/10">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-xl">Review Details</CardTitle>
+            <div className="flex items-center gap-3">
+              {onBack && (
+                <button
+                  onClick={onBack}
+                  className="text-ocean/40 hover:text-ocean transition-colors"
+                  aria-label="Back to voice"
+                >
+                  <ArrowLeft size={20} />
+                </button>
+              )}
+              <CardTitle className="text-xl">Review Details</CardTitle>
+            </div>
             {isHighConfidence ? (
               <div className="flex items-center gap-1.5 bg-gold/20 text-gold px-2.5 py-1 rounded-full text-xs font-bold">
                 <Check size={14} /> Looks right
