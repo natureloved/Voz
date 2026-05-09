@@ -157,3 +157,5 @@ export default function SendPage() {
     </main>
   );
 }
+
+export const dynamic = 'force-dynamic';

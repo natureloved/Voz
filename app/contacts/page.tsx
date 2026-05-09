@@ -103,3 +103,5 @@ export default function ContactsPage() {
     </main>
   );
 }
+
+export const dynamic = 'force-dynamic';

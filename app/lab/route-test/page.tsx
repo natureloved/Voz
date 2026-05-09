@@ -129,3 +129,5 @@ export default function RouteTestPage() {
     </main>
   );
 }
+
+export const dynamic = 'force-dynamic';

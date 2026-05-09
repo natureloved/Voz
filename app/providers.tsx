@@ -15,10 +15,6 @@ import { config } from '@/lib/wagmi';
 const queryClient = new QueryClient();
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const wallets = React.useMemo(
     () => [
@@ -27,10 +23,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
     ],
     []
   );
-
-  if (!mounted) {
-    return <div className="min-h-screen bg-cream flex flex-col">{children}</div>;
-  }
 
   return (
     <WagmiProvider config={config}>

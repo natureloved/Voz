@@ -32,9 +32,8 @@ export async function createTransfer(data: Omit<Transfer, 'createdAt'>): Promise
 }
 
 export async function getTransfer(id: string): Promise<Transfer | null> {
-  return kv.get<Transfer>(keys.transfer(id));
+  return (await kv.get(keys.transfer(id))) as Transfer | null;
 }
-
 export async function updateTransfer(id: string, data: Partial<Transfer>): Promise<Transfer | null> {
   const transfer = await getTransfer(id);
   if (!transfer) return null;

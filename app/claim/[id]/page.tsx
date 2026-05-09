@@ -16,7 +16,7 @@ async function ensureTranslationAndAudio(transferId: string) {
 
   // If already cached, return as-is
   if (transfer.translatedMessage) {
-    const audioExists = await kv.get<string>(keys.audio(transferId));
+    const audioExists = (await kv.get(keys.audio(transferId))) as string | null;
     if (audioExists) return transfer;
   }
 

@@ -19,7 +19,7 @@ export type Contact = z.infer<typeof ContactSchema>;
 export type ContactInput = z.infer<typeof ContactInputSchema>;
 
 export async function getContacts(evmAddress: string): Promise<Contact[]> {
-  const data = await kv.get<Contact[]>(keys.contacts(evmAddress));
+  const data = (await kv.get(keys.contacts(evmAddress))) as Contact[] | null;
   return data ?? [];
 }
 
