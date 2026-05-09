@@ -30,7 +30,7 @@ export default function SenderConfirmation({
       <Body style={{ backgroundColor: '#FBF7EF', fontFamily: 'Inter, sans-serif', margin: 0 }}>
         <Section style={{ backgroundColor: '#0A2540', padding: '20px 32px' }}>
           <Text style={{ color: '#FBF7EF', fontSize: '24px', fontWeight: 700, margin: 0, letterSpacing: '-0.5px' }}>
-            Voz
+            Voz<span style={{ color: '#FF6B5C' }}>.</span>
           </Text>
         </Section>
 
@@ -91,7 +91,7 @@ export default function SenderConfirmation({
           <Hr style={{ borderColor: '#0A2540', opacity: 0.1, margin: '40px 0 24px' }} />
 
           <Text style={{ fontSize: '11px', color: '#0A2540', opacity: 0.4, textAlign: 'center', margin: 0 }}>
-            {isEs ? 'Voz — pagos de voz entre cadenas.' : 'Voz — cross-chain voice payments.'}
+            {isEs ? 'Voz. — pagos de voz entre cadenas.' : 'Voz. — cross-chain voice payments.'}
           </Text>
         </Container>
       </Body>

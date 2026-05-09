@@ -52,7 +52,7 @@ export async function GET() {
           opacity: 0.5,
           display: 'flex',
         }}>
-          Voz
+          Voz<span style={{ color: '#FF6B5C' }}>.</span>
         </div>
 
         {/* Headline */}

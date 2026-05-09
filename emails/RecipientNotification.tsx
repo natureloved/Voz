@@ -30,7 +30,7 @@ export default function RecipientNotification({
         {/* Header band */}
         <Section style={{ backgroundColor: '#0A2540', padding: '20px 32px' }}>
           <Text style={{ color: '#FBF7EF', fontSize: '24px', fontWeight: 700, margin: 0, letterSpacing: '-0.5px' }}>
-            Voz
+            Voz<span style={{ color: '#FF6B5C' }}>.</span>
           </Text>
         </Section>
 
@@ -76,8 +76,8 @@ export default function RecipientNotification({
           {/* Footer */}
           <Text style={{ fontSize: '11px', color: '#0A2540', opacity: 0.4, textAlign: 'center', margin: 0 }}>
             {isEs
-              ? 'Este correo fue enviado por Voz, pagos de voz entre cadenas.'
-              : 'This email was sent by Voz, cross-chain voice payments.'}
+              ? 'Este correo fue enviado por Voz., pagos de voz entre cadenas.'
+              : 'This email was sent by Voz., cross-chain voice payments.'}
           </Text>
         </Container>
       </Body>

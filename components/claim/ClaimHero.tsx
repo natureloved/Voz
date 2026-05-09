@@ -20,7 +20,7 @@ export function ClaimHero({ transfer, rates, audioUrl }: ClaimHeroProps) {
       {/* Header band */}
       <div className="bg-ocean px-4 sm:px-6 py-5 flex items-center justify-between">
         <Link href="/" className="font-display font-bold text-cream text-xl sm:text-2xl tracking-tight hover:opacity-90 transition-opacity">
-          Voz
+          Voz<span className="text-coral">.</span>
         </Link>
         <span className="text-cream/50 text-[10px] sm:text-xs font-mono">
           {new Date(transfer.createdAt).toLocaleDateString()}

@@ -152,7 +152,7 @@ export default function SendPage() {
                       initial={{ opacity: 0, y: -10, height: 0 }}
                       animate={{ opacity: 1, y: 0, height: 'auto' }}
                       exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-                      className="max-w-md mx-auto mb-6 bg-gold/10 border border-gold/30 rounded-xl p-4 relative overflow-hidden"
+                      className="max-w-sm mx-auto mb-6 bg-gold/10 border border-gold/30 rounded-xl p-3.5 relative overflow-hidden"
                     >
                       <button
                         onClick={() => setHideTip(true)}
@@ -161,12 +161,12 @@ export default function SendPage() {
                       >
                         <X size={16} />
                       </button>
-                      <div className="flex items-start gap-3 pr-4">
-                        <div className="p-2 rounded-lg bg-gold/20 text-gold mt-0.5 shrink-0">
-                          <Sparkles size={18} />
+                      <div className="flex items-start gap-2.5 pr-4">
+                        <div className="p-1.5 rounded-lg bg-gold/20 text-gold mt-0.5 shrink-0">
+                          <Sparkles size={16} />
                         </div>
                         <div className="flex-1">
-                          <h3 className="font-display font-bold text-ocean text-sm mb-1">New to Voz?</h3>
+                          <h3 className="font-display font-bold text-ocean text-sm mb-1">New to Voz<span className="text-coral">.</span>?</h3>
                           <p className="text-sm text-ocean/70 leading-relaxed mb-2">
                             You can send directly by speaking, but voice transfers are <strong>even easier</strong> if you add contacts first!
                           </p>

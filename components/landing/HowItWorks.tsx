@@ -16,7 +16,7 @@ export function HowItWorks() {
           transition={{ duration: 0.6 }}
         >
           <p className="text-coral text-sm font-bold uppercase tracking-widest mb-3">
-            How Voz works
+            How Voz. works
           </p>
           <h2 className="font-display text-4xl sm:text-5xl text-ocean font-bold">
             One person speaks. The other hears.
@@ -45,7 +45,7 @@ export function HowItWorks() {
                 <li><strong className="text-ocean">Connect</strong> your wallet - Base, Arbitrum, Optimism, or Polygon</li>
                 <li><strong className="text-ocean">Speak</strong> what you want to send: <em className="text-ocean/70">"Send fifty dollars to Maria for her birthday"</em></li>
                 <li><strong className="text-ocean">Confirm</strong> the amount and recipient</li>
-                <li><strong className="text-ocean">Approve</strong> the transaction - Voz bridges to Solana automatically</li>
+                <li><strong className="text-ocean">Approve</strong> the transaction - Voz. bridges to Solana automatically</li>
                 <li><strong className="text-ocean">Share</strong> the claim link by email or copy it to send via WhatsApp, Telegram, or text</li>
               </ol>
             </div>

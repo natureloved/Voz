@@ -70,7 +70,7 @@ export function TracksFooter() {
         </div>
 
         <p className="text-center text-xs text-ocean/60 font-mono">
-          Voz · 2026 Hackathon · Built by{' '}
+          Voz. · 2026 Hackathon · Built by{' '}
           <a
             href="https://x.com/adejoke_btc"
             target="_blank"

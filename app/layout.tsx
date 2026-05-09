@@ -11,21 +11,21 @@ const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://voz.app';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Voz — Voice-first cross-chain payments',
-    template: '%s · Voz',
+    default: 'Voz. — Voice-first cross-chain payments',
+    template: '%s · Voz.',
   },
   description: 'Speak to send USDC from any EVM chain to Solana. Your family hears your voice in their language.',
   metadataBase: new URL(APP_URL),
   openGraph: {
     type: 'website',
-    siteName: 'Voz',
-    title: 'Voz — Speak. Send. Heard.',
+    siteName: 'Voz.',
+    title: 'Voz. — Speak. Send. Heard.',
     description: 'Voice-first cross-chain remittance. Any EVM chain to Solana, in your language.',
-    images: [{ url: '/api/og', width: 1200, height: 630, alt: 'Voz — Speak. Send. Heard.' }],
+    images: [{ url: '/api/og', width: 1200, height: 630, alt: 'Voz. — Speak. Send. Heard.' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Voz — Speak. Send. Heard.',
+    title: 'Voz. — Speak. Send. Heard.',
     description: 'Voice-first cross-chain remittance. Any EVM chain to Solana, in your language.',
     images: ['/api/og'],
   },

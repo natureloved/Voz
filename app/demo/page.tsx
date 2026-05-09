@@ -84,7 +84,9 @@ export default function DemoPage() {
           <span className="text-sm">Back</span>
         </Link>
         <div className="flex items-center gap-2">
-          <Link href="/" className="font-display font-bold text-ocean text-xl tracking-tight hover:opacity-90 transition-opacity">Voz</Link>
+          <Link href="/" className="font-display font-bold text-ocean text-xl tracking-tight hover:opacity-90 transition-opacity">
+            Voz<span className="text-coral">.</span>
+          </Link>
           <span className="text-[10px] font-bold bg-coral/15 text-coral px-2 py-0.5 rounded-full uppercase tracking-wider">
             Demo
           </span>
