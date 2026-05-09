@@ -12,9 +12,9 @@ export function WalletBar() {
   const solanaBalance = useSolanaUsdcBalance();
 
   return (
-    <div className="sticky top-0 z-50 w-full bg-cream/80 backdrop-blur border-b border-ocean/10 py-3 px-4 flex items-center justify-between">
+    <div className="sticky top-0 z-50 w-full bg-cream/80 backdrop-blur border-b border-ocean/10 py-3 px-2 sm:px-6 flex items-center justify-between gap-2">
       {/* EVM Side */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-1.5 sm:gap-4 shrink-0">
         <EvmConnectButton />
         <BalancePill 
           balance={evmBalance.balance} 
@@ -24,12 +24,12 @@ export function WalletBar() {
       </div>
 
       {/* Center Brand */}
-      <Link href="/" className="font-display font-bold text-ocean text-xl tracking-tight hover:opacity-90 transition-opacity">
+      <Link href="/" className="hidden sm:block font-display font-bold text-ocean text-xl tracking-tight hover:opacity-90 transition-opacity">
         Voz
       </Link>
 
       {/* Solana Side */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-1.5 sm:gap-4 shrink-0">
         <BalancePill 
           balance={solanaBalance.balance} 
           symbol={solanaBalance.symbol} 

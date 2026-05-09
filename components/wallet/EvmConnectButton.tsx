@@ -35,7 +35,7 @@ export function EvmConnectButton() {
             {(() => {
               if (!connected) {
                 return (
-                  <Button onClick={openConnectModal} type="button">
+                  <Button onClick={openConnectModal} type="button" className="text-xs px-3">
                     Connect EVM
                   </Button>
                 );

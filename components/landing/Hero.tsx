@@ -65,21 +65,15 @@ export function Hero() {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex flex-wrap items-center gap-2 sm:gap-3 bg-ocean/5 border border-ocean/10 px-4 py-2.5 rounded-2xl sm:rounded-full max-w-full"
+              className="inline-flex items-center gap-2 bg-ocean/5 border border-ocean/10 px-4 py-2 rounded-full max-w-full text-left"
             >
               <span className="flex h-2 w-2 relative shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <p className="text-xs text-ocean/80 font-sans font-medium">
+              <p className="text-xs text-ocean/80 font-sans font-medium leading-normal break-words">
                 Wallet connected successfully! You are ready to make voice payments.
               </p>
-              <Link
-                href="/send"
-                className="text-xs font-bold text-coral hover:text-coral/80 transition-colors flex items-center gap-0.5 sm:ml-2 sm:border-l sm:border-ocean/10 sm:pl-3 shrink-0"
-              >
-                Go to Send &rarr;
-              </Link>
             </motion.div>
           )}
 

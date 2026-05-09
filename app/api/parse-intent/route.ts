@@ -38,6 +38,13 @@ Output: {"amount":100,"recipient":{"kind":"address","value":"ABC123XYZ"},"langua
 
 Output strictly JSON.`;
 
+function extractJson(text: string): string {
+  // Strip markdown code fences, then grab the first {...} block
+  const stripped = text.replace(/```(?:json)?\s*/g, '').replace(/```/g, '').trim();
+  const match = stripped.match(/\{[\s\S]*\}/);
+  return match ? match[0] : stripped;
+}
+
 export async function POST(req: Request) {
   try {
     const { transcript, language } = await req.json();
@@ -63,7 +70,7 @@ export async function POST(req: Request) {
       });
 
       const responseText = message.content[0].type === 'text' ? message.content[0].text : '';
-      return JSON.parse(responseText.trim());
+      return JSON.parse(extractJson(responseText));
     };
 
     let rawJson;
