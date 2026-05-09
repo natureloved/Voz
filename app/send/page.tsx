@@ -61,12 +61,6 @@ export default function SendPage() {
 
       const parsedIntent = await res.json();
 
-      // Detect hard-fail fallback (amount=0 + empty recipient)
-      if (parsedIntent.amount === 0 && !parsedIntent.recipient?.value) {
-        setParseError("Couldn't understand that. Try saying e.g. \"Send 20 dollars to Maria\".");
-        return;
-      }
-
       setIntent(parsedIntent);
       setStep('review');
     } catch (err) {
