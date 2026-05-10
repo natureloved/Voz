@@ -223,8 +223,13 @@ export default function SendPage() {
                 claimUrl={typeof window !== 'undefined' ? `${window.location.origin}/claim/${claimId}` : ''}
                 recipientName={reviewedName}
                 recipientAddress={intent.recipient?.value}
+                recipientSolanaAddress={
+                  resolvedContact?.solanaAddress ??
+                  (intent.recipient?.kind === 'address' ? intent.recipient.value : undefined)
+                }
                 recipientEmail={resolvedContact?.email}
                 senderEvmAddress={address}
+                fromChain={executedRoute?.fromChainId}
                 amount={intent.amount}
                 message={intent.message ?? undefined}
                 txHash={extractTxInfo(executedRoute).txHash}

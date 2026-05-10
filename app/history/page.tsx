@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useAccount } from 'wagmi';
 import { WalletBar } from '@/components/wallet/WalletBar';
-import { ArrowLeft, Clock, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Clock, ExternalLink, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { truncateAddress } from '@/lib/cn';
@@ -15,6 +15,8 @@ const CHAIN_NAMES: Record<number, string> = {
   137: 'Polygon',
   10: 'Optimism',
 };
+
+const POLL_INTERVAL_MS = 8_000;
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', {
@@ -28,14 +30,33 @@ export default function HistoryPage() {
   const { address } = useAccount();
   const [transfers, setTransfers] = React.useState<Transfer[]>([]);
   const [loading, setLoading] = React.useState(true);
+  const [polling, setPolling] = React.useState(false);
+
+  const fetchTransfers = React.useCallback(async (addr: string, isPolling = false) => {
+    if (isPolling) setPolling(true);
+    try {
+      const res = await fetch(`/api/transfers?evmAddress=${addr}`);
+      const data = await res.json();
+      if (Array.isArray(data)) setTransfers(data);
+    } finally {
+      if (isPolling) setPolling(false);
+    }
+  }, []);
 
   React.useEffect(() => {
     if (!address) { setLoading(false); return; }
-    fetch(`/api/transfers?evmAddress=${address}`)
-      .then((r) => r.json())
-      .then((data) => setTransfers(Array.isArray(data) ? data : []))
-      .finally(() => setLoading(false));
-  }, [address]);
+    fetchTransfers(address).finally(() => setLoading(false));
+  }, [address, fetchTransfers]);
+
+  // Poll while any transfer is still pending
+  React.useEffect(() => {
+    const hasPending = transfers.some(
+      (t) => t.status === 'pending' && t.txHash && t.txHash !== 'pending',
+    );
+    if (!hasPending || !address) return;
+    const id = setInterval(() => fetchTransfers(address, true), POLL_INTERVAL_MS);
+    return () => clearInterval(id);
+  }, [transfers, address, fetchTransfers]);
 
   return (
     <main className="min-h-screen bg-cream flex flex-col">
@@ -46,6 +67,9 @@ export default function HistoryPage() {
             <ArrowLeft size={20} />
           </Link>
           <h1 className="text-xl sm:text-2xl font-display font-bold text-ocean">History</h1>
+          {polling && (
+            <RefreshCw size={14} className="text-ocean/30 animate-spin ml-1" />
+          )}
         </div>
 
         {!address && (

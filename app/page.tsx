@@ -32,12 +32,7 @@ export default function Home() {
               <EvmConnectButton />
               <SolanaConnectButton />
             </div>
-            <Link
-              href="/demo"
-              className="text-sm font-semibold bg-coral text-cream px-4 py-2 rounded-lg hover:bg-coral/90 active:scale-[0.97] transition-all"
-            >
-              Try demo
-            </Link>
+
           </div>
 
           {/* Mobile Hamburger Button */}
@@ -78,13 +73,7 @@ export default function Home() {
                     <SolanaConnectButton />
                   </div>
                 </div>
-                <Link
-                  href="/demo"
-                  onClick={() => setIsOpen(false)}
-                  className="self-start text-sm font-semibold bg-coral text-cream px-4 py-2 rounded-lg hover:bg-coral/90 active:scale-[0.97] transition-all shadow-md shadow-coral/10"
-                >
-                  Try demo
-                </Link>
+
               </div>
             </motion.div>
           )}

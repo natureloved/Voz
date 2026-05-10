@@ -10,8 +10,10 @@ interface StepDoneProps {
   claimUrl: string;
   recipientName?: string;
   recipientAddress?: string;
+  recipientSolanaAddress?: string;
   recipientEmail?: string;
   senderEvmAddress?: string;
+  fromChain?: number;
   amount: number;
   message?: string;
   txHash?: string;
@@ -24,8 +26,10 @@ export function StepDone({
   claimUrl,
   recipientName,
   recipientAddress,
+  recipientSolanaAddress,
   recipientEmail: prefilledEmail,
   senderEvmAddress,
+  fromChain,
   amount,
   message,
   txHash,
@@ -46,8 +50,8 @@ export function StepDone({
     const transferPayload = {
       id: claimId,
       amount,
-      fromChain: 0,
-      toSolanaAddress: '',
+      fromChain: fromChain ?? 0,
+      toSolanaAddress: recipientSolanaAddress ?? '',
       recipientName,
       recipientLanguage,
       recipientEmail: prefilledEmail,
