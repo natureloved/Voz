@@ -16,18 +16,22 @@ export const metadata: Metadata = {
   },
   description: 'Speak to send USDC from any EVM chain to Solana. Your family hears your voice in their language.',
   metadataBase: new URL(APP_URL),
+  icons: {
+    icon: '/favicon.png',
+    apple: '/logo.png',
+  },
   openGraph: {
     type: 'website',
     siteName: 'Voz.',
     title: 'Voz. — Speak. Send. Heard.',
     description: 'Voice-first cross-chain remittance. Any EVM chain to Solana, in your language.',
-    images: [{ url: '/api/og', width: 1200, height: 630, alt: 'Voz. — Speak. Send. Heard.' }],
+    images: [{ url: '/og.png', width: 1200, height: 628, alt: 'Voz. — Speak. Send. Heard.' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Voz. — Speak. Send. Heard.',
     description: 'Voice-first cross-chain remittance. Any EVM chain to Solana, in your language.',
-    images: ['/api/og'],
+    images: ['/og.png'],
   },
 };
 
