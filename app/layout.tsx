@@ -16,10 +16,6 @@ export const metadata: Metadata = {
   },
   description: 'Speak to send USDC from any EVM chain to Solana. Your family hears your voice in their language.',
   metadataBase: new URL(APP_URL),
-  icons: {
-    icon: '/favicon.png',
-    apple: '/logo.png',
-  },
   openGraph: {
     type: 'website',
     siteName: 'Voz.',
