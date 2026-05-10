@@ -229,20 +229,18 @@ export function IntentReview({ intent, onConfirm, onBack }: IntentReviewProps) {
                 )}
               </AnimatePresence>
 
-              {/* Recipient display name — shown when no address-only mode */}
-              {!noContactFound && (
-                <div className="mt-3">
-                  <label className="text-xs font-semibold text-ocean/50 uppercase tracking-wider mb-1.5 block">
-                    Recipient name (optional)
-                  </label>
-                  <Input
-                    value={recipientName}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRecipientName(e.target.value)}
-                    className="bg-ocean/5 border-none text-sm"
-                    placeholder="e.g. Maria"
-                  />
-                </div>
-              )}
+              {/* Recipient display name — always shown so sender can confirm the name */}
+              <div className="mt-3">
+                <label className="text-xs font-semibold text-ocean/50 uppercase tracking-wider mb-1.5 block">
+                  Recipient name (optional)
+                </label>
+                <Input
+                  value={recipientName}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRecipientName(e.target.value)}
+                  className="bg-ocean/5 border-none text-sm"
+                  placeholder="e.g. Maria"
+                />
+              </div>
             </div>
 
             {editedIntent.occasion && (

@@ -4,7 +4,7 @@ import * as React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   DEMO_TRANSCRIPT, DEMO_INTENT, DEMO_ROUTE,
-  DEMO_TIMELINE, DEMO_TRANSFER_BASE,
+  DEMO_TIMELINE, DEMO_TRANSFER_BASE, DEMO_CONTACT, DEMO_TX_HASH,
 } from '@/lib/demo-mode';
 import { RouteCard } from '@/components/send/RouteCard';
 import { Button } from '@/components/ui/Button';
@@ -168,11 +168,14 @@ export default function DemoPage() {
                 <StepDone
                   claimId={claimId}
                   claimUrl={typeof window !== 'undefined' ? `${window.location.origin}/claim/${claimId}` : ''}
-                  recipientName="Maria"
-                  recipientEmail="" // empty so judges type their own
-                  amount={25}
-                  txHash="DEMO_TX_HASH_NOT_REAL"
-                  recipientLanguage="es"
+                  recipientName={DEMO_CONTACT.name}
+                  recipientSolanaAddress={DEMO_CONTACT.solanaAddress}
+                  recipientEmail=""
+                  amount={DEMO_TRANSFER_BASE.amount}
+                  fromChain={DEMO_TRANSFER_BASE.fromChain}
+                  message={DEMO_INTENT.message ?? ''}
+                  txHash={DEMO_TX_HASH}
+                  recipientLanguage={DEMO_CONTACT.language}
                 />
               </>
             )}

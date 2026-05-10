@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { USDC_SPL_MINT } from '@/lib/solana';
-import { getAssociatedTokenAddress } from '@solana/spl-token';
 
 export function useSolanaUsdcBalance() {
   const { connection } = useConnection();
@@ -19,12 +18,19 @@ export function useSolanaUsdcBalance() {
     setIsLoading(true);
     setIsError(false);
     try {
-      const ata = await getAssociatedTokenAddress(USDC_SPL_MINT, publicKey);
-      const balanceInfo = await connection.getTokenAccountBalance(ata);
-      setBalance(balanceInfo.value.uiAmountString || '0.00');
+      // Use getParsedTokenAccountsByOwner so all USDC accounts are found,
+      // not just the standard ATA — handles wallets with non-ATA token accounts.
+      const { value: accounts } = await connection.getParsedTokenAccountsByOwner(publicKey, {
+        mint: USDC_SPL_MINT,
+      });
+      const total = accounts.reduce((sum, { account }) => {
+        const ui = (account.data as any).parsed?.info?.tokenAmount?.uiAmount ?? 0;
+        return sum + ui;
+      }, 0);
+      setBalance(total.toFixed(2));
     } catch (err) {
-      console.error("Error fetching Solana USDC balance:", err);
-      // Usually means the ATA doesn't exist (balance is 0)
+      console.error('Error fetching Solana USDC balance:', err);
+      setIsError(true);
       setBalance('0.00');
     } finally {
       setIsLoading(false);
