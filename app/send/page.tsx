@@ -225,6 +225,7 @@ export default function SendPage() {
                 recipientAddress={intent.recipient?.value}
                 recipientEmail={resolvedContact?.email}
                 amount={intent.amount}
+                message={intent.message}
                 txHash={extractTxInfo(executedRoute).txHash}
                 txLink={extractTxInfo(executedRoute).txLink}
                 recipientLanguage={(resolvedContact?.language ?? intent.language) === 'es' ? 'es' : 'en'}

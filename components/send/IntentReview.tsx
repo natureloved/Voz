@@ -226,6 +226,21 @@ export function IntentReview({ intent, onConfirm, onBack }: IntentReviewProps) {
                 />
               </div>
             )}
+
+            <div>
+              <label className="text-xs font-semibold text-ocean/50 uppercase tracking-wider mb-1.5 block">
+                Message (optional)
+              </label>
+              <textarea
+                value={editedIntent.message ?? ''}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  setEditedIntent({ ...editedIntent, message: e.target.value || undefined })
+                }
+                rows={3}
+                className="flex w-full rounded-md bg-ocean/5 px-3 py-2 text-sm text-ocean placeholder:text-ocean/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ocean/30 resize-none"
+                placeholder="Add a personal note for the recipient…"
+              />
+            </div>
           </div>
 
           {/* Quick-add drawer */}
