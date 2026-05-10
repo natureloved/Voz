@@ -1,0 +1,23 @@
+{
+  "name": "Voz. — Voice-first payments",
+  "short_name": "Voz.",
+  "description": "Speak to send USDC from any EVM chain to Solana. Your family hears your voice in their language.",
+  "start_url": "/send",
+  "display": "standalone",
+  "background_color": "#FBF7EF",
+  "theme_color": "#0A2540",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/og.png",
+      "sizes": "1200x628",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

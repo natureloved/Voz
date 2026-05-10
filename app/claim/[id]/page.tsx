@@ -53,8 +53,10 @@ async function ensureTranslationAndAudio(transferId: string) {
     // No audio cached — client will still show transcript
   }
 
-  // Cache translated message on transfer
-  const updated = await updateTransfer(transferId, { translatedMessage });
+  // Cache translated message and mark first claim view
+  const claimUpdate: Record<string, string> = { translatedMessage };
+  if (!transfer.claimedAt) claimUpdate.claimedAt = new Date().toISOString();
+  const updated = await updateTransfer(transferId, claimUpdate);
   return updated ?? transfer;
 }
 

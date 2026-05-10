@@ -20,6 +20,7 @@ export const TransferSchema = z.object({
   status: z.enum(['pending', 'confirmed']),
   createdAt: z.string(),
   translatedMessage: z.string().optional(),
+  claimedAt: z.string().optional(),
 });
 
 export type Transfer = z.infer<typeof TransferSchema>;

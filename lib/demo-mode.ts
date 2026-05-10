@@ -61,6 +61,51 @@ export const DEMO_TIMELINE = [
 export const DEMO_TX_HASH =
   '5A3BtFzXkMvPqReLsNpYwCjUhDgE2mKoViQSaI1HbZXyTWn4cF8uJ6dA7rOsG9';
 
+export const DEMO_HISTORY = [
+  {
+    id: 'demo-hist-1',
+    amount: 25,
+    fromChain: 8453,
+    toSolanaAddress: '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU',
+    recipientName: 'Maria García',
+    recipientLanguage: 'es' as const,
+    senderMessageOriginal: 'Happy birthday, Maria! Wishing you all the love today.',
+    senderLanguage: 'en' as const,
+    occasion: 'birthday',
+    txHash: '5A3BtFzXkMvPqReLsNpYwCjUhDgE2mKoViQSaI1HbZXyTWn4cF8uJ6dA7rOsG9',
+    status: 'confirmed' as const,
+    createdAt: '2025-05-08T14:22:00.000Z',
+    claimedAt: '2025-05-08T14:45:00.000Z',
+  },
+  {
+    id: 'demo-hist-2',
+    amount: 50,
+    fromChain: 42161,
+    toSolanaAddress: '4Nd1mBQtrMJVYVfKf2PX98q4YCJ1KqvDt1pSCTFH8HiK',
+    recipientName: 'Carlos',
+    recipientLanguage: 'es' as const,
+    senderMessageOriginal: 'Thanks for your help last week, really appreciate it!',
+    senderLanguage: 'en' as const,
+    txHash: '3HjkLmNpQrStUvWxAbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdef678901',
+    status: 'confirmed' as const,
+    createdAt: '2025-05-05T09:10:00.000Z',
+    claimedAt: '2025-05-05T09:30:00.000Z',
+  },
+  {
+    id: 'demo-hist-3',
+    amount: 15,
+    fromChain: 137,
+    toSolanaAddress: '9WzDXwBbmkg8ZTbNMqUxvQWVbjScRsQUvpEkAMr9w7k6',
+    recipientName: 'Abuela Rosa',
+    recipientLanguage: 'es' as const,
+    senderMessageOriginal: 'Te quiero mucho, abuela. Cuídate.',
+    senderLanguage: 'es' as const,
+    txHash: '7YzAbCdEfGhIjKlMnOpQrStUvWxYz1AbCdEfGhIjKlMnOpQrStUvWxYz98765432',
+    status: 'confirmed' as const,
+    createdAt: '2025-05-01T18:00:00.000Z',
+  },
+] as const;
+
 export const DEMO_TRANSFER_BASE = {
   amount: 25,
   fromChain: 8453,

@@ -33,6 +33,7 @@ export function IntentReview({ intent, onConfirm, onBack }: IntentReviewProps) {
 
   const isHighConfidence = intent.confidence === 'high';
   const isNameRecipient = editedIntent.recipient?.kind === 'name';
+  const noContactFound = contactMatches !== null && contactMatches.length === 0 && !resolvedContact;
 
   // Contact lookup when recipient is a name
   React.useEffect(() => {
@@ -57,8 +58,13 @@ export function IntentReview({ intent, onConfirm, onBack }: IntentReviewProps) {
           setContactMatches(matches);
           setShowPicker(true);
         } else {
-          // Zero matches → offer quick-add
+          // Zero matches — pre-fill display name with spoken word, clear address field
           setContactMatches([]);
+          setRecipientName((prev) => prev || (editedIntent.recipient?.value ?? ''));
+          setEditedIntent((prev) => ({
+            ...prev,
+            recipient: { kind: 'address', value: '' },
+          }));
         }
       })
       .catch(() => {/* no-op — proceed without contact lookup */});
@@ -169,51 +175,74 @@ export function IntentReview({ intent, onConfirm, onBack }: IntentReviewProps) {
                 )}
               </AnimatePresence>
 
-              <Input
-                value={editedIntent.recipient?.value || ''}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setEditedIntent({ ...editedIntent, recipient: { kind: 'address', value: e.target.value } });
-                  setResolvedContact(null);
-                }}
-                className="bg-ocean/5 border-none font-mono text-sm"
-                placeholder="Solana address or name"
-              />
-
-              <div className="mt-3">
-                <label className="text-xs font-semibold text-ocean/50 uppercase tracking-wider mb-1.5 block">
-                  Recipient name (optional)
-                </label>
+              {/* Normal recipient input — hidden when no contact found (address field takes over) */}
+              {!noContactFound && (
                 <Input
-                  value={recipientName}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRecipientName(e.target.value)}
-                  className="bg-ocean/5 border-none text-sm"
-                  placeholder="e.g. Maria"
+                  value={editedIntent.recipient?.value || ''}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setEditedIntent({ ...editedIntent, recipient: { kind: 'address', value: e.target.value } });
+                    setResolvedContact(null);
+                  }}
+                  className="bg-ocean/5 border-none font-mono text-sm"
+                  placeholder="Solana address or name"
                 />
-              </div>
+              )}
 
-              {/* Zero-match inline message */}
+              {/* No-contact-found: Solana address entry + display name */}
               <AnimatePresence>
-                {contactMatches !== null && contactMatches.length === 0 && !resolvedContact && !showQuickAdd && (
+                {noContactFound && !showQuickAdd && (
                   <motion.div
                     initial={{ opacity: 0, y: -4 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mt-2 flex items-center gap-2 bg-coral/5 border border-coral/20 rounded-lg px-3 py-2"
+                    className="space-y-3"
                   >
-                    <AlertCircle size={13} className="text-coral shrink-0" />
-                    <span className="text-xs text-coral/80 flex-1">
-                      No contact named &ldquo;{intent.recipient?.value}&rdquo; found.
-                    </span>
-                    {address && (
-                      <button
-                        onClick={() => setShowQuickAdd(true)}
-                        className="text-xs font-semibold text-coral underline underline-offset-2 flex items-center gap-1 shrink-0"
-                      >
-                        <UserPlus size={12} /> Add contact
-                      </button>
-                    )}
+                    <div className="flex items-center gap-2 bg-coral/5 border border-coral/20 rounded-lg px-3 py-2">
+                      <AlertCircle size={13} className="text-coral shrink-0" />
+                      <span className="text-xs text-coral/80 flex-1">
+                        No contact named &ldquo;{intent.recipient?.value}&rdquo; found.
+                      </span>
+                      {address && (
+                        <button
+                          onClick={() => setShowQuickAdd(true)}
+                          className="text-xs font-semibold text-coral underline underline-offset-2 flex items-center gap-1 shrink-0"
+                        >
+                          <UserPlus size={12} /> Add contact
+                        </button>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="text-xs font-semibold text-ocean/50 uppercase tracking-wider mb-1.5 block">
+                        Recipient Solana Address
+                      </label>
+                      <Input
+                        value={editedIntent.recipient?.value || ''}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setEditedIntent({ ...editedIntent, recipient: { kind: 'address', value: e.target.value } })
+                        }
+                        className="bg-ocean/5 border-none font-mono text-sm"
+                        placeholder="e.g. 7xKXt…"
+                        autoFocus
+                      />
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>
+
+              {/* Recipient display name — shown when no address-only mode */}
+              {!noContactFound && (
+                <div className="mt-3">
+                  <label className="text-xs font-semibold text-ocean/50 uppercase tracking-wider mb-1.5 block">
+                    Recipient name (optional)
+                  </label>
+                  <Input
+                    value={recipientName}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRecipientName(e.target.value)}
+                    className="bg-ocean/5 border-none text-sm"
+                    placeholder="e.g. Maria"
+                  />
+                </div>
+              )}
             </div>
 
             {editedIntent.occasion && (

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Inter_Tight, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
@@ -16,6 +16,12 @@ export const metadata: Metadata = {
   },
   description: 'Speak to send USDC from any EVM chain to Solana. Your family hears your voice in their language.',
   metadataBase: new URL(APP_URL),
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Voz.',
+  },
   openGraph: {
     type: 'website',
     siteName: 'Voz.',
@@ -29,6 +35,13 @@ export const metadata: Metadata = {
     description: 'Voice-first cross-chain remittance. Any EVM chain to Solana, in your language.',
     images: ['/og.png'],
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#0A2540',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({

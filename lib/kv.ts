@@ -11,14 +11,24 @@ class MockKV {
     memoryStore.set(key, value);
     return 'OK';
   }
+  async keys(pattern: string): Promise<string[]> {
+    const prefix = pattern.endsWith('*') ? pattern.slice(0, -1) : pattern;
+    return Array.from(memoryStore.keys()).filter((k) => k.startsWith(prefix));
+  }
 }
 
-export const kv = (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN)
+const kvClient = (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN)
   ? createClient({
       url: process.env.KV_REST_API_URL,
       token: process.env.KV_REST_API_TOKEN,
     })
   : new MockKV() as any;
+
+export const kv = kvClient;
+
+export async function scanKeys(pattern: string): Promise<string[]> {
+  return await kv.keys(pattern);
+}
 
 export const keys = {
   contacts: (evmAddress: string) => `voz:contacts:${evmAddress.toLowerCase()}`,

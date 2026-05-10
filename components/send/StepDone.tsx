@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { motion } from 'framer-motion';
 import { Check, Copy, Mail, Loader2, ExternalLink } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 import { cn, truncateAddress } from '@/lib/cn';
 
 interface StepDoneProps {
@@ -229,38 +230,48 @@ export function StepDone({
         )}
       </div>
 
-      {/* Copy link card — secondary action */}
+      {/* QR Code + copy link card */}
       <div className="bg-cream border border-ocean/10 rounded-2xl p-6">
-        <p className="text-sm font-semibold text-ocean/70 uppercase tracking-wide mb-3">
+        <p className="text-sm font-semibold text-ocean/70 uppercase tracking-wide mb-4">
           Or share anywhere
         </p>
-        <div className="flex gap-2">
-          <div className="flex-1 px-4 py-3 rounded-lg bg-white border border-ocean/10 font-mono text-sm text-ocean/70 truncate">
-            {claimUrl}
+
+        {/* QR code — scan to open claim page on any phone */}
+        <div className="flex flex-col sm:flex-row items-center gap-5">
+          <div className="bg-white rounded-xl p-3 border border-ocean/10 shrink-0">
+            <QRCodeSVG
+              value={claimUrl}
+              size={128}
+              bgColor="#ffffff"
+              fgColor="#0A2540"
+              level="M"
+            />
           </div>
-          <button
-            onClick={handleCopy}
-            className={cn(
-              'px-5 py-3 rounded-lg font-semibold transition-all',
-              'border border-ocean/20 hover:border-ocean/40 hover:bg-white',
-              'flex items-center gap-2 min-w-[100px] justify-center',
-              copied ? 'text-gold border-gold' : 'text-ocean'
-            )}
-          >
-            {copied ? (
-              <>
-                <Check className="w-4 h-4" /> Copied
-              </>
-            ) : (
-              <>
-                <Copy className="w-4 h-4" /> Copy
-              </>
-            )}
-          </button>
+          <div className="flex-1 w-full space-y-2">
+            <p className="text-xs text-ocean/50 text-center sm:text-left">
+              Point any phone camera at this code to open the claim page instantly
+            </p>
+            <div className="flex gap-2">
+              <div className="flex-1 px-3 py-2.5 rounded-lg bg-white border border-ocean/10 font-mono text-xs text-ocean/60 truncate">
+                {claimUrl}
+              </div>
+              <button
+                onClick={handleCopy}
+                className={cn(
+                  'px-4 py-2.5 rounded-lg font-semibold transition-all text-sm',
+                  'border border-ocean/20 hover:border-ocean/40 hover:bg-white',
+                  'flex items-center gap-1.5 shrink-0 justify-center',
+                  copied ? 'text-gold border-gold' : 'text-ocean'
+                )}
+              >
+                {copied ? <><Check className="w-3.5 h-3.5" /> Copied</> : <><Copy className="w-3.5 h-3.5" /> Copy</>}
+              </button>
+            </div>
+            <p className="text-xs text-ocean/40 text-center sm:text-left">
+              Also works via WhatsApp, Telegram, iMessage, or email
+            </p>
+          </div>
         </div>
-        <p className="mt-3 text-xs text-ocean/50">
-          Paste into WhatsApp, Telegram, iMessage, or anywhere else
-        </p>
       </div>
     </div>
   );
