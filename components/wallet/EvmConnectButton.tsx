@@ -50,29 +50,29 @@ export function EvmConnectButton() {
               }
 
               return (
-                <div style={{ display: 'flex', gap: 12 }}>
+                <div className="flex items-center gap-1.5 sm:gap-3">
                   <Button
                     onClick={openChainModal}
-                    style={{ display: 'flex', alignItems: 'center' }}
                     type="button"
-                    className="bg-ocean/10 text-ocean hover:bg-ocean/20"
+                    className="hidden sm:flex items-center bg-ocean/10 text-ocean hover:bg-ocean/20 text-xs px-2"
                   >
                     {chain.hasIcon && (
                       <div
                         style={{
                           background: chain.iconBackground,
-                          width: 16,
-                          height: 16,
+                          width: 14,
+                          height: 14,
                           borderRadius: 999,
                           overflow: 'hidden',
                           marginRight: 4,
+                          flexShrink: 0,
                         }}
                       >
                         {chain.iconUrl && (
                           <img
                             alt={chain.name ?? 'Chain icon'}
                             src={chain.iconUrl}
-                            style={{ width: 16, height: 16 }}
+                            style={{ width: 14, height: 14 }}
                           />
                         )}
                       </div>
@@ -80,7 +80,7 @@ export function EvmConnectButton() {
                     {chain.name}
                   </Button>
 
-                  <Button onClick={openAccountModal} type="button" className="bg-ocean/10 text-ocean hover:bg-ocean/20">
+                  <Button onClick={openAccountModal} type="button" className="bg-ocean/10 text-ocean hover:bg-ocean/20 text-xs px-2 sm:px-3">
                     {account.displayName}
                   </Button>
                 </div>

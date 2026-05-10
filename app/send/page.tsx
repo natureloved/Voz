@@ -231,7 +231,7 @@ export default function SendPage() {
                 senderEvmAddress={address}
                 fromChain={executedRoute?.fromChainId}
                 amount={intent.amount}
-                message={intent.message ?? undefined}
+                message={intent.message ?? transcript?.text ?? undefined}
                 txHash={extractTxInfo(executedRoute).txHash}
                 txLink={extractTxInfo(executedRoute).txLink}
                 recipientLanguage={(resolvedContact?.language ?? intent.language) === 'es' ? 'es' : 'en'}

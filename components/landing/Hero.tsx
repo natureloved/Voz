@@ -29,7 +29,7 @@ export function Hero() {
   const isAnyConnected = mounted && (isEvmConnected || isSolanaConnected);
 
   return (
-    <section className="min-h-[calc(100vh-60px)] flex items-center px-4 sm:px-6 md:px-12 lg:px-20">
+    <section className="min-h-[calc(100vh-80px)] flex items-center px-4 sm:px-6 md:px-12 lg:px-20 py-10 md:py-0">
       <div className="w-full max-w-6xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 items-center">
 
         {/* Left — copy */}
@@ -39,7 +39,7 @@ export function Hero() {
               VOICE-FIRST · CROSS-CHAIN · SOLANA
             </motion.p>
 
-            <h1 className="text-6xl sm:text-7xl lg:text-8xl font-display font-bold text-ocean tracking-tighter leading-none">
+            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-display font-bold text-ocean tracking-tighter leading-none">
               {HEADLINE_WORDS.map((word, i) => (
                 <motion.span
                   key={word}
@@ -116,12 +116,12 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Right — animated mic */}
+        {/* Right — animated mic (hidden on mobile to save vertical space) */}
         <motion.div
           initial={{ opacity: 1, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="flex items-center justify-center"
+          className="hidden md:flex items-center justify-center"
         >
           <AnimatedMic />
         </motion.div>

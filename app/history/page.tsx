@@ -67,15 +67,15 @@ function TransferList({ transfers }: { transfers: Transfer[] }) {
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex flex-col items-end gap-1.5 shrink-0">
             {t.claimedAt ? (
               <span className="flex items-center gap-1 text-xs text-ocean/40">
-                <Eye size={12} /> Claimed
+                <Eye size={11} /> Claimed
               </span>
             ) : (
               <Link
                 href={`/claim/${t.id}`}
-                className="text-xs font-medium text-coral hover:opacity-70 transition-opacity"
+                className="text-xs font-medium text-coral hover:opacity-70 transition-opacity whitespace-nowrap"
               >
                 Claim link
               </Link>
@@ -88,7 +88,7 @@ function TransferList({ transfers }: { transfers: Transfer[] }) {
                 className="text-ocean/30 hover:text-ocean transition-colors"
                 title="View on Solscan"
               >
-                <ExternalLink size={14} />
+                <ExternalLink size={13} />
               </a>
             )}
           </div>
