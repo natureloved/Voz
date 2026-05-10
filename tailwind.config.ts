@@ -21,6 +21,15 @@ const config: Config = {
         display: ['var(--font-inter-tight)', 'sans-serif'],
         mono: ['var(--font-jetbrains-mono)', 'monospace'],
       },
+      keyframes: {
+        fadeSlideIn: {
+          '0%': { opacity: '0', transform: 'translateY(6px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
+      animation: {
+        'fade-slide-in': 'fadeSlideIn 0.25s ease-out',
+      },
     },
   },
   plugins: [],

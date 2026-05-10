@@ -1,7 +1,10 @@
+'use client';
+
 import * as React from 'react';
 import { Transfer } from '@/lib/transfers';
 import { SupportedCurrency } from '@/lib/fx';
 import { LocalCurrencyToggle } from './LocalCurrencyToggle';
+import { LocalCashOut } from './LocalCashOut';
 import { VoiceMessage } from './VoiceMessage';
 import { TxLink } from './TxLink';
 import Link from 'next/link';
@@ -14,6 +17,7 @@ interface ClaimHeroProps {
 
 export function ClaimHero({ transfer, rates, audioUrl }: ClaimHeroProps) {
   const senderDisplay = transfer.senderName ?? 'Someone';
+  const [currency, setCurrency] = React.useState<SupportedCurrency>('USD');
 
   return (
     <div className="min-h-screen bg-cream flex flex-col">
@@ -34,7 +38,7 @@ export function ClaimHero({ transfer, rates, audioUrl }: ClaimHeroProps) {
         </p>
 
         {/* Amount with currency toggle */}
-        <LocalCurrencyToggle usdAmount={transfer.amount} rates={rates} />
+        <LocalCurrencyToggle usdAmount={transfer.amount} rates={rates} onSelect={setCurrency} />
 
         <p className="text-ocean/40 text-sm font-mono">USDC</p>
 
@@ -52,6 +56,9 @@ export function ClaimHero({ transfer, rates, audioUrl }: ClaimHeroProps) {
         <div className="w-full bg-ocean/5 rounded-2xl px-4 py-3 sm:px-5 sm:py-4">
           <TxLink txHash={transfer.txHash} status={transfer.status} />
         </div>
+
+        {/* Local cash-out partners */}
+        <LocalCashOut currency={currency} />
       </div>
     </div>
   );

@@ -6,9 +6,10 @@ import { SUPPORTED_CURRENCIES, CURRENCY_SYMBOLS, SupportedCurrency } from '@/lib
 interface LocalCurrencyToggleProps {
   usdAmount: number;
   rates: Partial<Record<SupportedCurrency, number>>;
+  onSelect?: (currency: SupportedCurrency) => void;
 }
 
-export function LocalCurrencyToggle({ usdAmount, rates }: LocalCurrencyToggleProps) {
+export function LocalCurrencyToggle({ usdAmount, rates, onSelect }: LocalCurrencyToggleProps) {
   const [selected, setSelected] = React.useState<SupportedCurrency>('USD');
 
   const displayAmount = selected === 'USD'
@@ -30,7 +31,7 @@ export function LocalCurrencyToggle({ usdAmount, rates }: LocalCurrencyTogglePro
         {SUPPORTED_CURRENCIES.map((cur) => (
           <button
             key={cur}
-            onClick={() => setSelected(cur)}
+            onClick={() => { setSelected(cur); onSelect?.(cur); }}
             className={`px-3 py-2 sm:py-1.5 rounded-full text-xs font-semibold transition-all min-h-[36px] ${
               selected === cur
                 ? 'bg-ocean text-cream'
