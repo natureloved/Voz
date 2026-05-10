@@ -12,6 +12,8 @@ import { Check, Loader2, Mic, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/Card';
 import { StepDone } from '@/components/send/StepDone';
+import { LocalCashOut } from '@/components/claim/LocalCashOut';
+import { SUPPORTED_CURRENCIES, SupportedCurrency } from '@/lib/fx';
 
 type DemoStep = 'voice' | 'review' | 'quote' | 'execute' | 'done';
 
@@ -177,6 +179,15 @@ export default function DemoPage() {
                   txHash={DEMO_TX_HASH}
                   recipientLanguage={DEMO_CONTACT.language}
                 />
+
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.4 }}
+                  className="mt-6 pb-12"
+                >
+                  <DemoCashOutPreview recipientName={DEMO_CONTACT.name} />
+                </motion.div>
               </>
             )}
           </motion.div>
@@ -327,6 +338,43 @@ function DemoQuoteStep({ onContinue }: { onContinue: () => void }) {
       <Button className="w-full h-12 text-base" onClick={onContinue}>
         Execute transfer →
       </Button>
+    </div>
+  );
+}
+
+// ── Cash-out preview (done step) ────────────────────────────────
+function DemoCashOutPreview({ recipientName }: { recipientName: string }) {
+  const [currency, setCurrency] = React.useState<SupportedCurrency>('MXN');
+
+  return (
+    <div className="space-y-3">
+      {/* Framing header */}
+      <div className="flex items-center gap-2 px-1">
+        <div className="flex-1 h-px bg-ocean/10" />
+        <p className="text-[11px] font-semibold text-ocean/35 uppercase tracking-widest whitespace-nowrap">
+          What {recipientName.split(' ')[0]} sees
+        </p>
+        <div className="flex-1 h-px bg-ocean/10" />
+      </div>
+
+      {/* Currency switcher */}
+      <div className="flex gap-1.5 justify-center flex-wrap">
+        {SUPPORTED_CURRENCIES.map((cur) => (
+          <button
+            key={cur}
+            onClick={() => setCurrency(cur)}
+            className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+              currency === cur
+                ? 'bg-ocean text-cream'
+                : 'bg-ocean/10 text-ocean/50 hover:bg-ocean/15'
+            }`}
+          >
+            {cur}
+          </button>
+        ))}
+      </div>
+
+      <LocalCashOut currency={currency} />
     </div>
   );
 }
