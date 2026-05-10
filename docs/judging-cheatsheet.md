@@ -56,7 +56,7 @@ One page. Four tracks. Exact file locations.
   - Returns `{ amount, recipient: { kind, value }, message, language, occasion, confidence, ambiguities }`
 - Translation agent: `app/claim/[id]/page.tsx` lines 20–42
   - System prompt: *"preserve warmth, occasion, natural phrasing — not literal"*
-  - Model: `claude-3-5-sonnet-20241022`
+  - Model: `claude-sonnet-4-6`
   - Only runs once per transfer; result cached in KV
 
 **The demo moment:** In `/demo`, the review step shows Claude's parsed output. In `/claim/{id}`, the translated Spanish transcript is Claude's work (click "Show transcript").

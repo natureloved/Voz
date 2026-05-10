@@ -6,9 +6,9 @@ export const PaymentIntentSchema = z.object({
     kind: z.enum(['name', 'address']),
     value: z.string(),
   }),
-  message: z.string().optional().describe('Message to the recipient'),
+  message: z.string().optional().nullable().describe('Message to the recipient'),
   language: z.enum(['en', 'es']),
-  occasion: z.string().optional().describe('Context of the payment: birthday, rent, dinner, etc'),
+  occasion: z.string().optional().nullable().describe('Context of the payment: birthday, rent, dinner, etc'),
   confidence: z.enum(['high', 'medium', 'low']),
   ambiguities: z.array(z.string()).describe('List of ambiguities or missing details if confidence is not high'),
 });
