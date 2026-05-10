@@ -225,7 +225,8 @@ export default function SendPage() {
                 recipientAddress={intent.recipient?.value}
                 recipientEmail={resolvedContact?.email}
                 amount={intent.amount}
-                txHash={extractTxHash(executedRoute)}
+                txHash={extractTxInfo(executedRoute).txHash}
+                txLink={extractTxInfo(executedRoute).txLink}
                 recipientLanguage={(resolvedContact?.language ?? intent.language) === 'es' ? 'es' : 'en'}
               />
             )}
@@ -236,15 +237,19 @@ export default function SendPage() {
   );
 }
 
-function extractTxHash(route: Route | null): string {
-  if (!route) return '';
+function extractTxInfo(route: Route | null): { txHash: string; txLink: string } {
+  if (!route) return { txHash: '', txLink: '' };
   for (const step of route.steps) {
     const ext = step as any;
     const processes: any[] = ext.execution?.process ?? [];
-    const cross = processes.find((p: any) => p.type === 'CROSS_CHAIN' || p.type === 'SEND' || p.type === 'RECEIVING_CHAIN');
-    if (cross?.txHash) return cross.txHash;
+    // Prefer the destination-chain (Solana) tx — that's what actually delivered the funds
+    const receiving = processes.find((p: any) => p.type === 'RECEIVING_CHAIN' && p.txHash);
+    if (receiving) return { txHash: receiving.txHash, txLink: receiving.txLink || '' };
+    // Fall back to the source-chain (EVM bridge) tx
+    const source = processes.find((p: any) => (p.type === 'CROSS_CHAIN' || p.type === 'SEND') && p.txHash);
+    if (source) return { txHash: source.txHash, txLink: source.txLink || '' };
   }
-  return '';
+  return { txHash: '', txLink: '' };
 }
 
 export const dynamic = 'force-dynamic';

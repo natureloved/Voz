@@ -13,6 +13,7 @@ interface StepDoneProps {
   recipientEmail?: string;
   amount: number;
   txHash?: string;
+  txLink?: string;
   recipientLanguage: 'en' | 'es';
 }
 
@@ -24,6 +25,7 @@ export function StepDone({
   recipientEmail: prefilledEmail,
   amount,
   txHash,
+  txLink,
   recipientLanguage,
 }: StepDoneProps) {
   const [email, setEmail] = React.useState(prefilledEmail ?? '');
@@ -150,12 +152,12 @@ export function StepDone({
         </p>
         {txHash && txHash !== 'pending' && (
           <a
-            href={`https://solscan.io/tx/${txHash}`}
+            href={txLink || `https://solscan.io/tx/${txHash}`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 mt-3 text-sm text-coral hover:underline font-mono"
           >
-            View on Solscan ({truncateAddress(txHash)}) <ExternalLink className="w-3 h-3" />
+            View transaction ({truncateAddress(txHash)}) <ExternalLink className="w-3 h-3" />
           </a>
         )}
       </div>
