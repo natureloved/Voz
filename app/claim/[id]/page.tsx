@@ -28,7 +28,7 @@ async function ensureTranslationAndAudio(transferId: string) {
     try {
       const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
       const response = await client.messages.create({
-        model: 'claude-sonnet-4-6',
+        model: 'claude-3-5-sonnet-20241022',
         max_tokens: 512,
         system: `You are a warm, natural translator. Translate the sender's message into ${
           transfer.recipientLanguage === 'es' ? 'Spanish' : 'English'
