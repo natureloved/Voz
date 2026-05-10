@@ -66,7 +66,7 @@ function extractJson(text: string): Record<string, unknown> | null {
   }
 
   // Strip markdown fences
-  let cleaned = text
+  const cleaned = text
     .replace(/```json\s*/gi, '')
     .replace(/```\s*/g, '')
     .trim();
