@@ -11,6 +11,7 @@ interface StepDoneProps {
   recipientName?: string;
   recipientAddress?: string;
   recipientEmail?: string;
+  senderEvmAddress?: string;
   amount: number;
   message?: string;
   txHash?: string;
@@ -24,6 +25,7 @@ export function StepDone({
   recipientName,
   recipientAddress,
   recipientEmail: prefilledEmail,
+  senderEvmAddress,
   amount,
   message,
   txHash,
@@ -49,6 +51,7 @@ export function StepDone({
       recipientName,
       recipientLanguage,
       recipientEmail: prefilledEmail,
+      senderEvmAddress,
       senderMessageOriginal: message ?? '',
       senderLanguage: 'en',
       occasion: 'General',

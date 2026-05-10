@@ -11,6 +11,7 @@ export const TransferSchema = z.object({
   recipientEmail: z.string().optional(),
   senderName: z.string().optional(),
   senderEmail: z.string().optional(),
+  senderEvmAddress: z.string().optional(),
   senderMessageOriginal: z.string(),
   senderLanguage: z.enum(['en', 'es']),
   occasion: z.string().optional(),
@@ -28,7 +29,20 @@ export async function createTransfer(data: Omit<Transfer, 'createdAt'>): Promise
     createdAt: new Date().toISOString(),
   };
   await kv.set(keys.transfer(transfer.id), transfer);
+
+  if (transfer.senderEvmAddress) {
+    const senderKey = keys.transfersBySender(transfer.senderEvmAddress);
+    const existing = (((await kv.get(senderKey)) as string[] | null) ?? []);
+    await kv.set(senderKey, [transfer.id, ...existing]);
+  }
+
   return transfer;
+}
+
+export async function listTransfersBySender(evmAddress: string): Promise<Transfer[]> {
+  const ids = (((await kv.get(keys.transfersBySender(evmAddress))) as string[] | null) ?? []);
+  const results = await Promise.all(ids.map((id: string) => getTransfer(id)));
+  return results.filter((t): t is Transfer => t !== null);
 }
 
 export async function getTransfer(id: string): Promise<Transfer | null> {

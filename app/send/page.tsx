@@ -224,6 +224,7 @@ export default function SendPage() {
                 recipientName={reviewedName}
                 recipientAddress={intent.recipient?.value}
                 recipientEmail={resolvedContact?.email}
+                senderEvmAddress={address}
                 amount={intent.amount}
                 message={intent.message ?? undefined}
                 txHash={extractTxInfo(executedRoute).txHash}

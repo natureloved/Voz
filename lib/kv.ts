@@ -23,5 +23,6 @@ export const kv = (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN)
 export const keys = {
   contacts: (evmAddress: string) => `voz:contacts:${evmAddress.toLowerCase()}`,
   transfer: (id: string) => `voz:transfer:${id}`,
+  transfersBySender: (evmAddress: string) => `voz:transfers:sender:${evmAddress.toLowerCase()}`,
   audio: (id: string) => `voz:audio:${id}`,
 };
