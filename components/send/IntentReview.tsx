@@ -11,10 +11,11 @@ import { ContactPicker } from '@/components/contacts/ContactPicker';
 import { ContactForm } from '@/components/contacts/ContactForm';
 import { Check, AlertCircle, UserRound, UserPlus, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { truncateAddress } from '@/lib/cn';
 
 interface IntentReviewProps {
   intent: PaymentIntent;
-  onConfirm: (intent: PaymentIntent, resolvedContact?: Contact) => void;
+  onConfirm: (intent: PaymentIntent, resolvedContact?: Contact, recipientName?: string) => void;
   onBack?: () => void;
 }
 
@@ -22,6 +23,9 @@ export function IntentReview({ intent, onConfirm, onBack }: IntentReviewProps) {
   const { address } = useAccount();
   const [editedIntent, setEditedIntent] = React.useState(intent);
   const [resolvedContact, setResolvedContact] = React.useState<Contact | null>(null);
+  const [recipientName, setRecipientName] = React.useState<string>(() =>
+    intent.recipient?.kind === 'name' ? (intent.recipient?.value ?? '') : ''
+  );
   const [contactMatches, setContactMatches] = React.useState<Contact[] | null>(null);
   const [showPicker, setShowPicker] = React.useState(false);
   const [showQuickAdd, setShowQuickAdd] = React.useState(false);
@@ -62,6 +66,7 @@ export function IntentReview({ intent, onConfirm, onBack }: IntentReviewProps) {
 
   function handlePickerSelect(contact: Contact) {
     setResolvedContact(contact);
+    setRecipientName(contact.name);
     setShowPicker(false);
     setEditedIntent((prev: PaymentIntent) => ({
       ...prev,
@@ -71,6 +76,7 @@ export function IntentReview({ intent, onConfirm, onBack }: IntentReviewProps) {
 
   function handleQuickAddSaved(contact: Contact) {
     setResolvedContact(contact);
+    setRecipientName(contact.name);
     setShowQuickAdd(false);
     setContactMatches(null);
     setEditedIntent((prev: PaymentIntent) => ({
@@ -157,7 +163,7 @@ export function IntentReview({ intent, onConfirm, onBack }: IntentReviewProps) {
                       {resolvedContact.name}
                     </span>
                     <span className="text-xs font-mono text-ocean/50 truncate">
-                      {resolvedContact.solanaAddress.slice(0, 6)}…{resolvedContact.solanaAddress.slice(-4)}
+                      {truncateAddress(resolvedContact.solanaAddress)}
                     </span>
                   </motion.div>
                 )}
@@ -172,6 +178,18 @@ export function IntentReview({ intent, onConfirm, onBack }: IntentReviewProps) {
                 className="bg-ocean/5 border-none font-mono text-sm"
                 placeholder="Solana address or name"
               />
+
+              <div className="mt-3">
+                <label className="text-xs font-semibold text-ocean/50 uppercase tracking-wider mb-1.5 block">
+                  Recipient name (optional)
+                </label>
+                <Input
+                  value={recipientName}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRecipientName(e.target.value)}
+                  className="bg-ocean/5 border-none text-sm"
+                  placeholder="e.g. Maria"
+                />
+              </div>
 
               {/* Zero-match inline message */}
               <AnimatePresence>
@@ -233,7 +251,7 @@ export function IntentReview({ intent, onConfirm, onBack }: IntentReviewProps) {
 
           <Button
             className="w-full text-lg h-12"
-            onClick={() => onConfirm(editedIntent, resolvedContact ?? undefined)}
+            onClick={() => onConfirm(editedIntent, resolvedContact ?? undefined, recipientName || undefined)}
           >
             {isHighConfidence ? 'Continue' : 'Confirm & Continue'}
           </Button>

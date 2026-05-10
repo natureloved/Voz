@@ -3,12 +3,13 @@
 import * as React from 'react';
 import { motion } from 'framer-motion';
 import { Check, Copy, Mail, Loader2, ExternalLink } from 'lucide-react';
-import { cn } from '@/lib/cn';
+import { cn, truncateAddress } from '@/lib/cn';
 
 interface StepDoneProps {
   claimId: string;
   claimUrl: string;
   recipientName?: string;
+  recipientAddress?: string;
   recipientEmail?: string;
   amount: number;
   txHash?: string;
@@ -19,6 +20,7 @@ export function StepDone({
   claimId,
   claimUrl,
   recipientName,
+  recipientAddress,
   recipientEmail: prefilledEmail,
   amount,
   txHash,
@@ -136,9 +138,14 @@ export function StepDone({
       {/* Headline */}
       <div className="text-center mb-10">
         <h2 className="font-display text-4xl text-ocean mb-2">
-          ${amount} sent{recipientName ? ` to ${recipientName}` : ''}
+          ${amount} sent to {recipientName ? recipientName : truncateAddress(recipientAddress ?? '')}
         </h2>
-        <p className="text-ocean/60">
+        {recipientName && recipientAddress && (
+          <p className="font-mono text-sm text-ocean/50 mt-1">
+            {truncateAddress(recipientAddress)}
+          </p>
+        )}
+        <p className="text-ocean/60 mt-2">
           Now share the claim link so they can hear your message
         </p>
         {txHash && txHash !== 'pending' && (
@@ -148,7 +155,7 @@ export function StepDone({
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 mt-3 text-sm text-coral hover:underline font-mono"
           >
-            View on Solscan <ExternalLink className="w-3 h-3" />
+            View on Solscan ({truncateAddress(txHash)}) <ExternalLink className="w-3 h-3" />
           </a>
         )}
       </div>

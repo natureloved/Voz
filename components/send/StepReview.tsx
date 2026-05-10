@@ -7,7 +7,7 @@ import { IntentReview } from './IntentReview';
 
 interface StepReviewProps {
   intent: PaymentIntent;
-  onConfirm: (intent: PaymentIntent, resolvedContact?: Contact) => void;
+  onConfirm: (intent: PaymentIntent, resolvedContact?: Contact, recipientName?: string) => void;
   onBack?: () => void;
 }
 

@@ -25,6 +25,7 @@ export default function SendPage() {
   const [route, setRoute] = React.useState<Route | null>(null);
   const [executedRoute, setExecutedRoute] = React.useState<Route | null>(null);
   const [resolvedContact, setResolvedContact] = React.useState<Contact | null>(null);
+  const [reviewedName, setReviewedName] = React.useState<string | undefined>(undefined);
   const [claimId] = React.useState(() => crypto.randomUUID());
   const [isParsing, setIsParsing] = React.useState(false);
   const [parseError, setParseError] = React.useState<string | null>(null);
@@ -71,9 +72,10 @@ export default function SendPage() {
     }
   };
 
-  const handleReviewConfirm = (confirmedIntent: PaymentIntent, contact?: Contact) => {
+  const handleReviewConfirm = (confirmedIntent: PaymentIntent, contact?: Contact, name?: string) => {
     setIntent(confirmedIntent);
     setResolvedContact(contact ?? null);
+    setReviewedName(name);
     setStep('quote');
   };
 
@@ -219,7 +221,8 @@ export default function SendPage() {
               <StepDone
                 claimId={claimId}
                 claimUrl={typeof window !== 'undefined' ? `${window.location.origin}/claim/${claimId}` : ''}
-                recipientName={resolvedContact?.name ?? intent.recipient?.value}
+                recipientName={reviewedName}
+                recipientAddress={intent.recipient?.value}
                 recipientEmail={resolvedContact?.email}
                 amount={intent.amount}
                 txHash={extractTxHash(executedRoute)}
