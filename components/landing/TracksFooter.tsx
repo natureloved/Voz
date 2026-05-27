@@ -43,7 +43,7 @@ const TRACKS = [
 export function TracksFooter() {
   return (
     <footer className="border-t border-ocean/10 py-8 md:py-12 px-4 sm:px-6 md:px-12 lg:px-20">
-      <div className="max-w-6xl mx-auto space-y-8">
+      <div className="max-w-6xl mx-auto space-y-5 sm:space-y-8">
         <p className="text-center text-[10px] font-bold text-ocean/50 uppercase tracking-widest">
           Built with
         </p>

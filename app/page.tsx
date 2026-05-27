@@ -25,14 +25,19 @@ export default function Home() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-4">
+            <Link href="/send" className="text-sm text-ocean/50 hover:text-ocean transition-colors">
+              Send
+            </Link>
             <Link href="/contacts" className="text-sm text-ocean/50 hover:text-ocean transition-colors">
               Contacts
+            </Link>
+            <Link href="/history" className="text-sm text-ocean/50 hover:text-ocean transition-colors">
+              History
             </Link>
             <div className="flex items-center gap-2">
               <EvmConnectButton />
               <SolanaConnectButton />
             </div>
-
           </div>
 
           {/* Mobile Hamburger Button */}
@@ -59,11 +64,25 @@ export default function Home() {
             >
               <div className="flex flex-col gap-4 py-4 px-1">
                 <Link
+                  href="/send"
+                  onClick={() => setIsOpen(false)}
+                  className="text-sm font-semibold text-ocean/70 hover:text-ocean py-2 transition-colors border-b border-ocean/5"
+                >
+                  Send
+                </Link>
+                <Link
                   href="/contacts"
                   onClick={() => setIsOpen(false)}
                   className="text-sm font-semibold text-ocean/70 hover:text-ocean py-2 transition-colors border-b border-ocean/5"
                 >
                   Contacts
+                </Link>
+                <Link
+                  href="/history"
+                  onClick={() => setIsOpen(false)}
+                  className="text-sm font-semibold text-ocean/70 hover:text-ocean py-2 transition-colors border-b border-ocean/5"
+                >
+                  History
                 </Link>
                 <div className="flex flex-col gap-3 py-2">
                   <div className="w-full flex justify-start">

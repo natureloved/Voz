@@ -6,7 +6,7 @@ import { Check, Mic } from 'lucide-react';
 
 export function DemoTeaser() {
   return (
-    <section className="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-20 py-12 md:py-20 flex justify-center">
+    <section className="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-20 py-8 md:py-14 flex justify-center">
       <div className="relative w-full max-w-2xl">
         {/* Decorative background glow */}
         <div className="absolute inset-0 bg-ocean/5 rounded-3xl blur-3xl" />
@@ -18,7 +18,7 @@ export function DemoTeaser() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
+          <div className="flex flex-col md:flex-row gap-5 md:gap-8 items-center md:items-start">
             
             {/* Left: Speech Input Simulation */}
             <div className="w-full md:w-1/2 flex flex-col gap-4">

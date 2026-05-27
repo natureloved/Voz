@@ -13,7 +13,7 @@ interface StepReviewProps {
 
 export function StepReview({ intent, onConfirm, onBack }: StepReviewProps) {
   return (
-    <div className="py-8 sm:py-12">
+    <div className="py-4 sm:py-8">
       <IntentReview intent={intent} onConfirm={onConfirm} onBack={onBack} />
     </div>
   );

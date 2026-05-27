@@ -58,7 +58,7 @@ export function StepQuote({ intent, onQuoteConfirm }: StepQuoteProps) {
   }, [address, chainId, intent]);
 
   return (
-    <div className="py-6 sm:py-12 space-y-6 max-w-md mx-auto">
+    <div className="py-4 sm:py-10 space-y-6 max-w-md mx-auto">
       <div className="text-center space-y-2">
         <h2 className="text-2xl sm:text-3xl font-display font-bold text-ocean">Route Quote</h2>
         <p className="text-ocean/60 font-sans">

@@ -6,10 +6,10 @@ import Link from 'next/link';
 
 export function HowItWorks() {
   return (
-    <section className="py-24 px-6 bg-cream overflow-hidden">
+    <section className="py-14 sm:py-24 px-6 bg-cream overflow-hidden">
       <div className="max-w-5xl mx-auto">
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-8 sm:mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -82,7 +82,7 @@ export function HowItWorks() {
 
         {/* CTA win */}
         <motion.div
-          className="mt-20 text-center space-y-6"
+          className="mt-10 sm:mt-20 text-center space-y-6"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

@@ -33,7 +33,7 @@ export function Hero() {
       <div className="w-full max-w-6xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 items-center">
 
         {/* Left — copy */}
-        <div className="space-y-8">
+        <div className="space-y-5 sm:space-y-8">
           <div className="space-y-2">
             <motion.p {...fadeUp(0)} className="text-xs font-bold text-coral uppercase tracking-widest">
               VOICE-FIRST · CROSS-CHAIN · SOLANA
@@ -108,7 +108,7 @@ export function Hero() {
 
           <motion.div
             {...fadeUp(0.9)}
-            className="flex items-center gap-6 text-xs text-ocean/70 font-mono"
+            className="flex flex-wrap items-center gap-2 sm:gap-6 text-xs text-ocean/70 font-mono"
           >
             <span>Base · Arbitrum · Optimism · Polygon</span>
             <span className="text-gold">→</span>

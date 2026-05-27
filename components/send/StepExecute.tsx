@@ -135,7 +135,7 @@ export function StepExecute({ route, onComplete }: StepExecuteProps) {
   }, [route, onComplete]);
 
   return (
-    <div className="py-8 sm:py-12 space-y-4 sm:space-y-6 max-w-md mx-auto">
+    <div className="py-5 sm:py-10 space-y-4 sm:space-y-6 max-w-md mx-auto">
       <div className="text-center space-y-2">
         <h2 className="text-2xl sm:text-3xl font-display font-bold text-ocean">Sending...</h2>
         <p className="text-ocean/60 font-sans text-sm">Your transaction is being processed</p>

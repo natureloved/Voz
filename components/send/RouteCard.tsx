@@ -20,7 +20,7 @@ export function RouteCard({ route }: { route: Route }) {
           </span>
         </div>
         
-        <div className="flex gap-8 text-sm">
+        <div className="flex gap-4 sm:gap-8 text-sm">
           <div>
             <span className="text-ocean/50 block text-xs uppercase tracking-wider mb-1">Bridge Fees</span>
             <span className="font-medium text-ocean font-mono">${feesUSD.toFixed(4)}</span>

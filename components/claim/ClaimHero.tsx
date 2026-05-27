@@ -31,7 +31,7 @@ export function ClaimHero({ transfer, rates, audioUrl }: ClaimHeroProps) {
         </span>
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-8 sm:py-12 space-y-8 sm:space-y-10 max-w-md mx-auto w-full">
+      <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-5 sm:py-10 space-y-5 sm:space-y-8 max-w-md mx-auto w-full">
         {/* Sender subtitle */}
         <p className="text-coral font-display font-semibold text-xl text-center">
           {senderDisplay} sent you a message

@@ -136,19 +136,19 @@ export function StepDone({
   };
 
   return (
-    <div className="max-w-xl mx-auto py-6 sm:py-12 px-4 sm:px-6">
+    <div className="max-w-xl mx-auto py-4 sm:py-10 px-4 sm:px-6">
       {/* Animated checkmark */}
       <motion.div
         initial={{ scale: 0, rotate: -90 }}
         animate={{ scale: 1, rotate: 0 }}
         transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-        className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-gold flex items-center justify-center mb-6 sm:mb-8"
+        className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-gold flex items-center justify-center mb-4 sm:mb-8"
       >
         <Check className="w-8 h-8 sm:w-10 sm:h-10 text-ocean" strokeWidth={3} />
       </motion.div>
 
       {/* Headline */}
-      <div className="text-center mb-6 sm:mb-10">
+      <div className="text-center mb-4 sm:mb-8">
         <h2 className="font-display text-2xl sm:text-4xl text-ocean mb-2 break-words">
           ${amount} sent to {recipientName ? recipientName : truncateAddress(recipientAddress ?? '')}
         </h2>

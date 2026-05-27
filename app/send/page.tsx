@@ -105,7 +105,7 @@ export default function SendPage() {
       <WalletBar />
 
       {/* Progress bar */}
-      <div className="w-full max-w-md mx-auto pt-6 sm:pt-8 px-4">
+      <div className="w-full max-w-md mx-auto pt-4 sm:pt-6 px-4">
         <div className="flex items-center justify-between">
           {steps.map((s, i) => {
             const isActive = steps.indexOf(step) >= i;

@@ -208,7 +208,7 @@ function DemoVoiceStep({
   onContinue: () => void;
 }) {
   return (
-    <div className="py-8 sm:py-12 flex flex-col items-center space-y-8 sm:space-y-10">
+    <div className="py-5 sm:py-10 flex flex-col items-center space-y-6 sm:space-y-10">
       <div className="text-center space-y-2">
         <h2 className="text-2xl sm:text-3xl font-display font-bold text-ocean">Who to pay?</h2>
         <p className="text-ocean/50 text-sm">Demo: watch the AI parse your voice</p>
@@ -262,7 +262,7 @@ function DemoVoiceStep({
 // ── Review step ────────────────────────────────────────────────
 function DemoReviewStep({ onContinue }: { onContinue: () => void }) {
   return (
-    <div className="py-8 sm:py-12 space-y-6">
+    <div className="py-5 sm:py-10 space-y-5">
       <div className="text-center space-y-1">
         <h2 className="text-2xl sm:text-3xl font-display font-bold text-ocean">Review Details</h2>
         <p className="text-sm text-ocean/50">AI parsed your intent</p>
@@ -314,7 +314,7 @@ function Field({ label, value, mono }: { label: string; value: string; mono?: bo
 // ── Quote step ────────────────────────────────────────────────
 function DemoQuoteStep({ onContinue }: { onContinue: () => void }) {
   return (
-    <div className="py-8 sm:py-12 space-y-6">
+    <div className="py-5 sm:py-10 space-y-5">
       <div className="text-center space-y-2">
         <h2 className="text-2xl sm:text-3xl font-display font-bold text-ocean">Route Quote</h2>
         <p className="text-ocean/60 text-sm">
@@ -382,7 +382,7 @@ function DemoCashOutPreview({ recipientName }: { recipientName: string }) {
 // ── Execute step ────────────────────────────────────────────────
 function DemoExecuteStep({ timeline }: { timeline: TimelineEntry[] }) {
   return (
-    <div className="py-8 sm:py-12 space-y-6">
+    <div className="py-5 sm:py-10 space-y-5">
       <div className="text-center space-y-2">
         <h2 className="text-2xl sm:text-3xl font-display font-bold text-ocean">Sending…</h2>
         <p className="text-ocean/50 text-sm">Live transaction progress</p>
